@@ -9,3 +9,9 @@ But it doesn't quite work.  For some strange reason, the list is not complete. W
 I haven't finished it where it'll parse out the name and install it.  That won't be hard.  For now, I'm just going to generate a text file and setup a batch file to process it.  I hope to have time and come back and finish this project.
 
 _Written in Delphi 10.4_
+
+## Batch files in the meantime
+
+Since the GUI isn't where I want it to be quite yet, I wrote a bunch of batch files.  I basically dumped all the packages into a text file then prepended the GetIt command line to install them.  Then I separated them into groups.
+
+To run the batch files, start a DOS Prompt as Administrator, run the `rsvars.bat` batch file from your Delphi folder, then run any of the batch files in the `batch`  folder. You will want to modify the batch files and comment out the packages you don't want.
