@@ -1,8 +1,5 @@
 getitcmd -ae -i="AndroidKioskModeTemplate-1.0"
 getitcmd -ae -i="AppContactsScreen-1.0"
-getitcmd -ae -i="AppHomeScreens-1.0cb"
-getitcmd -ae -i="AppProfileScreens-1.0cb"
-getitcmd -ae -i="AppSettingsScreens-1.0cb"
 getitcmd -ae -i="AppTemplateFitnessCenter-1.0"
 getitcmd -ae -i="BottomNavigationTemplate-1.0"
 getitcmd -ae -i="CardViewWizard-1.0"
