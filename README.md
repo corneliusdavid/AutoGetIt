@@ -4,9 +4,7 @@ The idea with this small Delphi program is to automate the [GetIt package manage
 This Delphi program uses the DosCommand component (available on GetIt) to shell out to the GetItCmd.exe, show all the packages in a CheckListBox, and allows the user to simply check off all the ones they want and then sit back and watch them all get installed.
 
 ## Not quite there...
-But it doesn't quite work.  For some strange reason, the list is not complete. When running the same command, it pauses and asks the user to hit Enter to continue.  I can redirect the output to a file without it stopping but I can't get the whole list to fill up the list box...
-
-I haven't finished it where it'll parse out the name and install it.  That won't be hard.  For now, I'm just going to generate a text file and setup a batch file to process it.  I hope to have time and come back and finish this project.
+It's not finished yet but the earlier problems of not getting all the packages has been resolved (it was due to not parsing the lines from DosCommand properly).
 
 _Written in Delphi 10.4_
 
