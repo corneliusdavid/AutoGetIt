@@ -34,6 +34,7 @@ type
     InstallChecked1: TMenuItem;
     N2: TMenuItem;
     chkAcceptEULAs: TCheckBox;
+    btnInstallSelected: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -49,11 +50,13 @@ type
     var
       FPastFirstItem: Boolean;
       FFinished: Boolean;
+      FInstallAborted: Boolean;
     procedure SetDownloadTime(const Value: Integer);
     procedure SetPackageCount(const Value: Integer);
     procedure LoadRADVersionsCombo;
     procedure CleanPackageList;
-    procedure InstallGetItPackage(const GetItName: string);
+    procedure InstallGetItPackage(const GetItName: string;
+                                  const Count, Total: Integer);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
     function SelectedBDSVersion: string;
@@ -80,7 +83,8 @@ begin
   lbPackages.Items.Clear;
 end;
 
-procedure TfrmAutoGetItMain.InstallGetItPackage(const GetItName: string);
+procedure TfrmAutoGetItMain.InstallGetItPackage(const GetItName: string;
+                                                const Count, Total: Integer);
 var
   CmdArgs: string;
 begin
@@ -91,24 +95,42 @@ begin
 
   CmdArgs := Format('%s -i="%s"', [CmdArgs, GetItName]);
 
-  frmInstallLog.InstallGetItPackage(BDSBinDir, CmdArgs);
+  frmInstallLog.InstallGetItPackage(BDSBinDir, CmdArgs, Count, Total, FInstallAborted);
 end;
 
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
+
+  function CountChecked: Integer;
+  begin
+    Result := 0;
+    for var i := 0 to lbPackages.Count - 1 do
+      if lbPackages.Checked[i] then
+        Result := Result + 1;
+  end;
+
 var
   GetItLine: string;
   GetItName: string;
   space: Integer;
+  count, total: Integer;
 begin
-  for var i := 0 to lbPackages.Count - 1 do
+  FInstallAborted := False;
+  count := 0;
+  total := CountChecked;
+  for var i := 0 to lbPackages.Count - 1 do begin
+    Inc(count);
     if lbPackages.Checked[i] then begin
       GetItLine := lbPackages.Items[i];
 
       space := Pos(' ', GetItLine);
       GetItName := LeftStr(GetItLine, space - 1);
 
-      InstallGetItPackage(GetItName);
+      InstallGetItPackage(GetItName, count, total);
     end;
+
+    if FInstallAborted then
+      Break;
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actRefreshExecute(Sender: TObject);
@@ -150,6 +172,8 @@ begin
   finally
     Screen.Cursor := crDefault;
   end;
+
+  actInstallChecked.Enabled := lbPackages.Items.Count > 0;
 end;
 
 procedure TfrmAutoGetItMain.actSaveCheckedListExecute(Sender: TObject);
