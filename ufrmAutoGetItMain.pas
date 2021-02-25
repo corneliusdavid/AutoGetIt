@@ -37,6 +37,15 @@ type
     btnInstallSelected: TBitBtn;
     actUninstallChecked: TAction;
     UninstallChecked1: TMenuItem;
+    FileOpenDialogSavedChecks: TFileOpenDialog;
+    FileSaveDialogSavedChecks: TFileSaveDialog;
+    actLoadCheckedList: TAction;
+    dlgClearChecksFirst: TTaskDialog;
+    actLoadCheckedList1: TMenuItem;
+    actInstallOne: TAction;
+    Installhighlightedpackage1: TMenuItem;
+    actUninstallOne: TAction;
+    Uninstallhighlightedpackage1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -44,8 +53,12 @@ type
     procedure actInstallCheckedExecute(Sender: TObject);
     procedure actCheckAllExecute(Sender: TObject);
     procedure actUncheckAllExecute(Sender: TObject);
-    procedure actSaveCheckedListExecute(Sender: TObject);
     procedure actUninstallCheckedExecute(Sender: TObject);
+    procedure actSaveCheckedListExecute(Sender: TObject);
+    procedure actLoadCheckedListExecute(Sender: TObject);
+    procedure actInstallOneExecute(Sender: TObject);
+    procedure actUninstallOneExecute(Sender: TObject);
+    procedure lbPackagesClick(Sender: TObject);
   private
     const
       BDS_USER_ROOT = '\Software\Embarcadero\BDS\';
@@ -63,6 +76,7 @@ type
     procedure ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
+    function ParseGetItName(const GetItLine: string): string;
     function CountChecked: Integer;
     function SelectedBDSVersion: string;
     property PackageCount: Integer write SetPackageCount;
@@ -88,6 +102,12 @@ begin
   lbPackages.Items.Clear;
 end;
 
+procedure TfrmAutoGetItMain.lbPackagesClick(Sender: TObject);
+begin
+  actInstallOne.Enabled := lbPackages.ItemIndex > -1;
+  actUninstallOne.Enabled := lbPackages.ItemIndex > -1;
+end;
+
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
   ProcessCheckedPackages(function (const GetItName: string): string
@@ -107,6 +127,24 @@ begin
       begin
         Result := Format('-u="%s"', [GetItName]);
       end);
+end;
+
+procedure TfrmAutoGetItMain.actInstallOneExecute(Sender: TObject);
+begin
+  frmInstallLog.Initialize;
+  frmInstallLog.ProcessGetItPackage(BDSBinDir,
+                   Format('-i="%s"', [ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])]),
+                   1, 1, FInstallAborted);
+  frmInstallLog.NotifyFinished;
+end;
+
+procedure TfrmAutoGetItMain.actUninstallOneExecute(Sender: TObject);
+begin
+  frmInstallLog.Initialize;
+  frmInstallLog.ProcessGetItPackage(BDSBinDir,
+                   Format('-u="%s"', [ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])]),
+                   1, 1, FInstallAborted);
+  frmInstallLog.NotifyFinished;
 end;
 
 procedure TfrmAutoGetItMain.actRefreshExecute(Sender: TObject);
@@ -154,8 +192,56 @@ begin
 end;
 
 procedure TfrmAutoGetItMain.actSaveCheckedListExecute(Sender: TObject);
+var
+  GetItName: string;
+  CheckedList: TStringList;
 begin
-  ShowMessage('this feature not yet implemented');
+  CheckedList := TStringList.Create;
+  try
+    for var i := 0 to lbPackages.Count - 1 do
+      if lbPackages.Checked[i] then begin
+        GetItName := ParseGetItName(lbPackages.Items[i]);
+        CheckedList.Add(GetItName);
+      end;
+
+    FileSaveDialogSavedChecks.FileName := 'AutoGetIt for RAD Studio ' + cmbRADVersions.Text;
+    if FileSaveDialogSavedChecks.Execute then
+      CheckedList.SaveToFile(FileSaveDialogSavedChecks.FileName);
+  finally
+    CheckedList.Free;
+  end;
+end;
+
+procedure TfrmAutoGetItMain.actLoadCheckedListExecute(Sender: TObject);
+var
+  GetItPos: Integer;
+  CheckedList: TStringList;
+begin
+  CheckedList := TStringList.Create;
+  try
+    FileOpenDialogSavedChecks.FileName := 'AutoGetIt for RAD Studio ' + cmbRADVersions.Text;
+    if FileOpenDialogSavedChecks.Execute then begin
+      CheckedList.LoadFromFile(FileOpenDialogSavedChecks.FileName);
+
+      if CountChecked > 0 then begin
+        if dlgClearChecksFirst.Execute then
+          case dlgClearChecksFirst.ModalResult of
+            mrCancel:
+              Exit;
+            mrYes:
+              actUncheckAll.Execute;
+          end;
+      end;
+
+      for var i := 0 to CheckedList.Count - 1 do begin
+        for GetItPos := 0 to lbPackages.Items.Count - 1 do
+          if StartsText(CheckedList[i], lbPackages.Items[GetItPos]) then
+            lbPackages.Checked[GetItPos] := True;
+      end;
+    end;
+  finally
+    CheckedList.Free;
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actCheckAllExecute(Sender: TObject);
@@ -189,7 +275,9 @@ end;
 procedure TfrmAutoGetItMain.CleanPackageList;
 { Not sure if there's a bug in DosCommand or what but the list of packages
   often contains cut-off entries that are then completed on the next line,
-  so this routine goes through and deletes those partial entries.
+  like it misinterpreted a line break, so this routine goes through and
+  deletes those partial entries by checking to see if the previous line
+  is the start of the current line.
 }
 var
   LastPackage: string;
@@ -261,11 +349,16 @@ begin
   end;
 end;
 
+function TfrmAutoGetItMain.ParseGetItName(const GetItLine: string): string;
+begin
+  var space := Pos(' ', GetItLine);
+  Result := LeftStr(GetItLine, space - 1);
+end;
+
 procedure TfrmAutoGetItMain.ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
 var
   GetItLine: string;
   GetItName: string;
-  space: Integer;
   count, total: Integer;
 begin
   FInstallAborted := False;
@@ -275,12 +368,9 @@ begin
   for var i := 0 to lbPackages.Count - 1 do begin
     if lbPackages.Checked[i] then begin
       GetItLine := lbPackages.Items[i];
-
-      space := Pos(' ', GetItLine);
-      GetItName := LeftStr(GetItLine, space - 1);
+      GetItName := ParseGetItName(GetItLine);
 
       Inc(count);
-
       frmInstallLog.ProcessGetItPackage(BDSBinDir, GetItArgsFunc(GetItName),
                                         Count, Total, FInstallAborted)
     end;

@@ -99,9 +99,9 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 2
     end
     object chkInstalledOnly: TCheckBox
-      Left = 408
-      Top = 17
-      Width = 97
+      Left = 404
+      Top = 30
+      Width = 103
       Height = 17
       Caption = 'Installed Only'
       TabOrder = 3
@@ -119,10 +119,12 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TextHint = 'leave blank to include all packages'
     end
     object chkAcceptEULAs: TCheckBox
-      Left = 408
-      Top = 39
-      Width = 118
+      Left = 598
+      Top = 58
+      Width = 105
       Height = 17
+      Alignment = taLeftJustify
+      Anchors = [akTop, akRight]
       Caption = 'Accept EULAs'
       Checked = True
       State = cbChecked
@@ -135,7 +137,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Height = 34
       Action = actInstallChecked
       Anchors = [akTop, akRight]
-      Caption = 'Install Checked'
+      Caption = 'Install checked'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -191,6 +193,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     ParentFont = False
     PopupMenu = mnuCheckListPopup
     TabOrder = 1
+    OnClick = lbPackagesClick
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -216,28 +219,50 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       OnExecute = actRefreshExecute
     end
     object actInstallChecked: TAction
-      Caption = 'Install Checked'
+      Category = 'install'
+      Caption = 'Install checked'
       Enabled = False
       OnExecute = actInstallCheckedExecute
     end
     object actSaveCheckedList: TAction
+      Category = 'load and save'
       Caption = 'Saved checked items'
       ShortCut = 16467
       OnExecute = actSaveCheckedListExecute
     end
     object actCheckAll: TAction
+      Category = 'check all'
       Caption = 'Check All'
       ShortCut = 16449
       OnExecute = actCheckAllExecute
     end
     object actUncheckAll: TAction
+      Category = 'check all'
       Caption = 'Uncheck All'
       OnExecute = actUncheckAllExecute
     end
     object actUninstallChecked: TAction
-      Caption = 'Uninstall Checked'
+      Category = 'install'
+      Caption = 'Uninstall checked'
       Enabled = False
       OnExecute = actUninstallCheckedExecute
+    end
+    object actLoadCheckedList: TAction
+      Category = 'load and save'
+      Caption = 'Load checked items'
+      OnExecute = actLoadCheckedListExecute
+    end
+    object actInstallOne: TAction
+      Category = 'install'
+      Caption = 'Install highlighted'
+      Enabled = False
+      OnExecute = actInstallOneExecute
+    end
+    object actUninstallOne: TAction
+      Category = 'install'
+      Caption = 'Uninstall highlighted'
+      Enabled = False
+      OnExecute = actUninstallOneExecute
     end
   end
   object DosCommand: TDosCommand
@@ -267,11 +292,67 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     object UninstallChecked1: TMenuItem
       Action = actUninstallChecked
     end
+    object Installhighlightedpackage1: TMenuItem
+      Action = actInstallOne
+    end
+    object Uninstallhighlightedpackage1: TMenuItem
+      Action = actUninstallOne
+    end
     object N2: TMenuItem
       Caption = '-'
     end
     object Savedcheckeditems1: TMenuItem
       Action = actSaveCheckedList
     end
+    object actLoadCheckedList1: TMenuItem
+      Action = actLoadCheckedList
+    end
+  end
+  object FileOpenDialogSavedChecks: TFileOpenDialog
+    DefaultExtension = '*.txt'
+    FavoriteLinks = <>
+    FileTypes = <
+      item
+        DisplayName = 'Text files'
+        FileMask = '*.txt'
+      end
+      item
+        DisplayName = 'Any file'
+        FileMask = '*.*'
+      end>
+    Options = [fdoPathMustExist, fdoFileMustExist]
+    Title = 'Open a saved set of GetIt checked names'
+    Left = 348
+    Top = 304
+  end
+  object FileSaveDialogSavedChecks: TFileSaveDialog
+    DefaultExtension = '*.txt'
+    FavoriteLinks = <>
+    FileTypes = <
+      item
+        DisplayName = 'Text files'
+        FileMask = '*.txt'
+      end
+      item
+        DisplayName = 'Any file'
+        FileMask = '*.*'
+      end>
+    Options = [fdoOverWritePrompt, fdoCreatePrompt]
+    Title = 'Save a set of GetIt checked names'
+    Left = 344
+    Top = 352
+  end
+  object dlgClearChecksFirst: TTaskDialog
+    Buttons = <>
+    Caption = 'AutoGetIt'
+    CommonButtons = [tcbYes, tcbNo, tcbCancel]
+    DefaultButton = tcbCancel
+    RadioButtons = <>
+    Text = 
+      'Should all currently checked packages be unchcecked before loadi' +
+      'ng the saved list of checked packages?'
+    Title = 'Clear checked first?'
+    Left = 352
+    Top = 256
   end
 end
