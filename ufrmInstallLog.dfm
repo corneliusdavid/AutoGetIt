@@ -21,8 +21,6 @@ object frmInstallLog: TfrmInstallLog
     Align = alClient
     ItemHeight = 13
     TabOrder = 0
-    ExplicitWidth = 808
-    ExplicitHeight = 385
   end
   object pnlLogBottom: TPanel
     Left = 0
@@ -43,8 +41,8 @@ object frmInstallLog: TfrmInstallLog
       Caption = '0 of 2 packages'
     end
     object btnCancel: TBitBtn
-      Left = 8
-      Top = 4
+      Left = 10
+      Top = 6
       Width = 89
       Height = 28
       Anchors = [akLeft, akTop, akBottom]
@@ -52,7 +50,6 @@ object frmInstallLog: TfrmInstallLog
       NumGlyphs = 2
       TabOrder = 0
       OnClick = btnCancelClick
-      ExplicitHeight = 35
     end
     object pbInstalls: TProgressBar
       Left = 208
@@ -61,6 +58,17 @@ object frmInstallLog: TfrmInstallLog
       Height = 27
       Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 1
+    end
+    object btnClose: TBitBtn
+      Left = 10
+      Top = 6
+      Width = 89
+      Height = 28
+      Anchors = [akLeft, akTop, akBottom]
+      Kind = bkClose
+      NumGlyphs = 2
+      TabOrder = 2
+      OnClick = btnCloseClick
     end
   end
   object DosCmdGetItInstall: TDosCommand

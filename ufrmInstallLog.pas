@@ -15,15 +15,19 @@ type
     btnCancel: TBitBtn;
     lblCount: TLabel;
     pbInstalls: TProgressBar;
+    btnClose: TBitBtn;
     procedure DosCmdGetItInstallNewLine(ASender: TObject;
       const ANewLine: string; AOutputType: TOutputType);
     procedure DosCmdGetItInstallTerminated(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
   private
     FAbort: Boolean;
     FFinished: Boolean;
+    procedure AddLog(const LogMsg: string);
   public
-    procedure ClearLog;
+    procedure Initialize;
+    procedure NotifyFinished;
     procedure InstallGetItPackage(const StartDir, GetItCmdArgs: string;
                                   const Count, Total: Integer;
                                   var Aborted: Boolean);
@@ -41,21 +45,35 @@ uses
 
 { TfrmInstallLog }
 
+procedure TfrmInstallLog.AddLog(const LogMsg: string);
+begin
+  lbInstallLog.Items.Add(LogMsg);
+  lbInstallLog.ItemIndex := lbInstallLog.Items.Count - 1;
+  lbInstallLog.Update;
+end;
+
 procedure TfrmInstallLog.btnCancelClick(Sender: TObject);
 begin
   FAbort := True;
   DosCmdGetItInstall.Stop;
 end;
 
-procedure TfrmInstallLog.ClearLog;
+procedure TfrmInstallLog.btnCloseClick(Sender: TObject);
+begin
+  Hide;
+end;
+
+procedure TfrmInstallLog.Initialize;
 begin
   lbInstallLog.Items.Clear;
+  btnCancel.BringToFront;
+  Show;
 end;
 
 procedure TfrmInstallLog.DosCmdGetItInstallNewLine(ASender: TObject;
   const ANewLine: string; AOutputType: TOutputType);
 begin
-  lbInstallLog.Items.Add(ANewLine);
+  AddLog(ANewLine);
 end;
 
 procedure TfrmInstallLog.DosCmdGetItInstallTerminated(Sender: TObject);
@@ -67,11 +85,6 @@ procedure TfrmInstallLog.InstallGetItPackage(const StartDir, GetItCmdArgs: strin
                                              const Count, Total: Integer;
                                              var Aborted: Boolean);
 begin
-  if not Visible then begin
-    ClearLog;
-    Show;
-  end;
-
   lblCount.Caption := Format('%d of %d packages', [Count, Total]);
   lblCount.Update;
 
@@ -82,7 +95,7 @@ begin
   DosCmdGetItInstall.CurrentDir := StartDir;
   DosCmdGetItInstall.CommandLine := TPath.Combine(StartDir, 'GetItCmd.exe ') + GetItCmdArgs;
 
-  lbInstallLog.Items.Add(DosCmdGetItInstall.CommandLine);
+  AddLog('Command Line: ' + DosCmdGetItInstall.CommandLine);
 
   FAbort := False;
   FFinished := False;
@@ -94,16 +107,20 @@ begin
       Application.ProcessMessages;
     until FFinished or FAbort;
 
-    lbInstallLog.Items.Add('========================');
-    lbInstallLog.ItemIndex := lbInstallLog.Items.Count - 1;
-    lbInstallLog.Update;
+    AddLog('========================');
   finally
     Screen.Cursor := crDefault;
   end;
 
   Aborted := FAbort;
   if FAbort then
-    lbInstallLog.Items.Add('Aborted!');
+    AddLog('Aborted!');
+end;
+
+procedure TfrmInstallLog.NotifyFinished;
+begin
+  AddLog('Finished');
+  btnClose.BringToFront;
 end;
 
 end.

@@ -117,6 +117,7 @@ begin
   FInstallAborted := False;
   total := CountChecked;
   count := 0;
+  frmInstallLog.Initialize;
   for var i := 0 to lbPackages.Count - 1 do begin
     if lbPackages.Checked[i] then begin
       GetItLine := lbPackages.Items[i];
@@ -131,6 +132,7 @@ begin
     if FInstallAborted then
       Break;
   end;
+  frmInstallLog.NotifyFinished;
 end;
 
 procedure TfrmAutoGetItMain.actRefreshExecute(Sender: TObject);
