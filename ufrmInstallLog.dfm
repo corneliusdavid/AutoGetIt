@@ -1,7 +1,7 @@
 object frmInstallLog: TfrmInstallLog
   Left = 0
   Top = 0
-  Caption = 'Install Log'
+  Caption = 'Install/Uninstall Log'
   ClientHeight = 555
   ClientWidth = 803
   Color = clBtnFace
@@ -29,7 +29,6 @@ object frmInstallLog: TfrmInstallLog
     Height = 38
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 523
     DesignSize = (
       803
       38)

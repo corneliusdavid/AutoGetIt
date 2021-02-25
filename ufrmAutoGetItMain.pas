@@ -35,6 +35,8 @@ type
     N2: TMenuItem;
     chkAcceptEULAs: TCheckBox;
     btnInstallSelected: TBitBtn;
+    actUninstallChecked: TAction;
+    UninstallChecked1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -43,22 +45,25 @@ type
     procedure actCheckAllExecute(Sender: TObject);
     procedure actUncheckAllExecute(Sender: TObject);
     procedure actSaveCheckedListExecute(Sender: TObject);
+    procedure actUninstallCheckedExecute(Sender: TObject);
   private
     const
       BDS_USER_ROOT = '\Software\Embarcadero\BDS\';
-    procedure SetExecLine(const Value: string);
+    type
+      TGetItArgsFunction = reference to function (const GetItName: string): string;
     var
       FPastFirstItem: Boolean;
       FFinished: Boolean;
       FInstallAborted: Boolean;
+    procedure SetExecLine(const Value: string);
     procedure SetDownloadTime(const Value: Integer);
     procedure SetPackageCount(const Value: Integer);
     procedure LoadRADVersionsCombo;
     procedure CleanPackageList;
-    procedure InstallGetItPackage(const GetItName: string;
-                                  const Count, Total: Integer);
+    procedure ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
+    function CountChecked: Integer;
     function SelectedBDSVersion: string;
     property PackageCount: Integer write SetPackageCount;
     property DownloadTime: Integer write SetDownloadTime;
@@ -83,56 +88,25 @@ begin
   lbPackages.Items.Clear;
 end;
 
-procedure TfrmAutoGetItMain.InstallGetItPackage(const GetItName: string;
-                                                const Count, Total: Integer);
-var
-  CmdArgs: string;
+procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
-  if chkAcceptEULAs.Checked then
-    CmdArgs := '-ae'
-  else
-    CmdArgs := EmptyStr;
+  ProcessCheckedPackages(function (const GetItName: string): string
+      begin
+        if chkAcceptEULAs.Checked then
+          Result := '-ae'
+        else
+          Result := EmptyStr;
 
-  CmdArgs := Format('%s -i="%s"', [CmdArgs, GetItName]);
-
-  frmInstallLog.InstallGetItPackage(BDSBinDir, CmdArgs, Count, Total, FInstallAborted);
+        Result := Format('%s -i="%s"', [Result, GetItName]);
+      end);
 end;
 
-procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
-
-  function CountChecked: Integer;
-  begin
-    Result := 0;
-    for var i := 0 to lbPackages.Count - 1 do
-      if lbPackages.Checked[i] then
-        Result := Result + 1;
-  end;
-
-var
-  GetItLine: string;
-  GetItName: string;
-  space: Integer;
-  count, total: Integer;
+procedure TfrmAutoGetItMain.actUninstallCheckedExecute(Sender: TObject);
 begin
-  FInstallAborted := False;
-  total := CountChecked;
-  count := 0;
-  frmInstallLog.Initialize;
-  for var i := 0 to lbPackages.Count - 1 do begin
-    if lbPackages.Checked[i] then begin
-      GetItLine := lbPackages.Items[i];
-
-      space := Pos(' ', GetItLine);
-      GetItName := LeftStr(GetItLine, space - 1);
-
-      Inc(count);
-      InstallGetItPackage(GetItName, count, total);
-    end;
-
-    if FInstallAborted then
-      Break;
-  end;
-  frmInstallLog.NotifyFinished;
+  ProcessCheckedPackages(function (const GetItName: string): string
+      begin
+        Result := Format('-u="%s"', [GetItName]);
+      end);
 end;
 
 procedure TfrmAutoGetItMain.actRefreshExecute(Sender: TObject);
@@ -176,6 +150,7 @@ begin
   end;
 
   actInstallChecked.Enabled := lbPackages.Items.Count > 0;
+  actUninstallChecked.Enabled := lbPackages.Items.Count > 0;
 end;
 
 procedure TfrmAutoGetItMain.actSaveCheckedListExecute(Sender: TObject);
@@ -229,6 +204,14 @@ begin
   end;
 end;
 
+function TfrmAutoGetItMain.CountChecked: Integer;
+begin
+  Result := 0;
+  for var i := 0 to lbPackages.Count - 1 do
+    if lbPackages.Checked[i] then
+      Result := Result + 1;
+end;
+
 procedure TfrmAutoGetItMain.DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
 begin
   if not FPastFirstItem then begin
@@ -276,6 +259,36 @@ begin
   finally
     reg.Free;
   end;
+end;
+
+procedure TfrmAutoGetItMain.ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
+var
+  GetItLine: string;
+  GetItName: string;
+  space: Integer;
+  count, total: Integer;
+begin
+  FInstallAborted := False;
+  total := CountChecked;
+  count := 0;
+  frmInstallLog.Initialize;
+  for var i := 0 to lbPackages.Count - 1 do begin
+    if lbPackages.Checked[i] then begin
+      GetItLine := lbPackages.Items[i];
+
+      space := Pos(' ', GetItLine);
+      GetItName := LeftStr(GetItLine, space - 1);
+
+      Inc(count);
+
+      frmInstallLog.ProcessGetItPackage(BDSBinDir, GetItArgsFunc(GetItName),
+                                        Count, Total, FInstallAborted)
+    end;
+
+    if FInstallAborted then
+      Break;
+  end;
+  frmInstallLog.NotifyFinished;
 end;
 
 function TfrmAutoGetItMain.SelectedBDSVersion: string;

@@ -28,7 +28,7 @@ type
   public
     procedure Initialize;
     procedure NotifyFinished;
-    procedure InstallGetItPackage(const StartDir, GetItCmdArgs: string;
+    procedure ProcessGetItPackage(const StartDir, GetItCmdArgs: string;
                                   const Count, Total: Integer;
                                   var Aborted: Boolean);
   end;
@@ -81,7 +81,7 @@ begin
   FFinished := True;
 end;
 
-procedure TfrmInstallLog.InstallGetItPackage(const StartDir, GetItCmdArgs: string;
+procedure TfrmInstallLog.ProcessGetItPackage(const StartDir, GetItCmdArgs: string;
                                              const Count, Total: Integer;
                                              var Aborted: Boolean);
 begin

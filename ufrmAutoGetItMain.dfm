@@ -3,7 +3,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   Top = 0
   Caption = 'Auto GetIt!'
   ClientHeight = 569
-  ClientWidth = 852
+  ClientWidth = 914
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 868
@@ -19,16 +19,15 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 852
+    Width = 914
     Height = 89
     Align = alTop
     TabOrder = 0
-    ExplicitTop = -6
     DesignSize = (
-      852
+      914
       89)
     object Label1: TLabel
-      Left = 532
+      Left = 594
       Top = 22
       Width = 116
       Height = 16
@@ -74,7 +73,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 0
     end
     object cmbRADVersions: TComboBox
-      Left = 654
+      Left = 716
       Top = 19
       Width = 186
       Height = 24
@@ -130,12 +129,18 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 5
     end
     object btnInstallSelected: TBitBtn
-      Left = 532
+      Left = 716
       Top = 49
-      Width = 141
+      Width = 186
       Height = 34
       Action = actInstallChecked
+      Anchors = [akTop, akRight]
       Caption = 'Install Checked'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000130B0000130B00000000000000000000FFFFFFFFFFFF
@@ -163,13 +168,14 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         FFFFFFBB9991B38A82F2E2E2F2E0E2F2E0E2F2E0E2F2E0E2F2E0E2F0E0E0ECDC
         DCF2E2E2955B4FE2D3D0FFFFFFFFFFFFFFFFFFBA968D874A3A935B4F93594D93
         594D93594D93594D93594D93594D93594D955B4F813F30E0D0CD}
+      ParentFont = False
       TabOrder = 6
     end
   end
   object lbPackages: TCheckListBox
     Left = 0
     Top = 89
-    Width = 852
+    Width = 914
     Height = 461
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -189,7 +195,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   object StatusBar: TStatusBar
     Left = 0
     Top = 550
-    Width = 852
+    Width = 914
     Height = 19
     Panels = <
       item
@@ -228,6 +234,11 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Caption = 'Uncheck All'
       OnExecute = actUncheckAllExecute
     end
+    object actUninstallChecked: TAction
+      Caption = 'Uninstall Checked'
+      Enabled = False
+      OnExecute = actUninstallCheckedExecute
+    end
   end
   object DosCommand: TDosCommand
     InputToOutput = False
@@ -252,6 +263,9 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     end
     object InstallChecked1: TMenuItem
       Action = actInstallChecked
+    end
+    object UninstallChecked1: TMenuItem
+      Action = actUninstallChecked
     end
     object N2: TMenuItem
       Caption = '-'
