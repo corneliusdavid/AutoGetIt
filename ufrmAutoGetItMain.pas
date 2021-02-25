@@ -115,16 +115,16 @@ var
   count, total: Integer;
 begin
   FInstallAborted := False;
-  count := 0;
   total := CountChecked;
+  count := 0;
   for var i := 0 to lbPackages.Count - 1 do begin
-    Inc(count);
     if lbPackages.Checked[i] then begin
       GetItLine := lbPackages.Items[i];
 
       space := Pos(' ', GetItLine);
       GetItName := LeftStr(GetItLine, space - 1);
 
+      Inc(count);
       InstallGetItPackage(GetItName, count, total);
     end;
 
@@ -261,7 +261,7 @@ begin
       if reg.OpenKey(BDS_USER_ROOT + BDS_VERSIONS[i], False) then begin
         // make sure a root path is listed before adding this version
         if Length(BDSRootPath(BDS_VERSIONS[i])) > 0 then
-          cmbRADVersions.Items.Add(BDS_VERSIONS[i] + ' - Delphi ' + DELPHI_NAMES[i]);
+          cmbRADVersions.Items.Insert(0, BDS_VERSIONS[i] + ' - Delphi ' + DELPHI_NAMES[i]);
       end;
 
     if cmbRADVersions.Items.Count > 0 then
