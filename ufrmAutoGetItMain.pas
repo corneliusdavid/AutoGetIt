@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  DosCommand, Vcl.CheckLst, Vcl.ComCtrls;
+  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -23,14 +23,29 @@ type
     chkInstalledOnly: TCheckBox;
     edtNameFilter: TLabeledEdit;
     StatusBar: TStatusBar;
-    procedure actRefreshExecute(Sender: TObject);
+    mnuCheckListPopup: TPopupMenu;
+    actSaveCheckedList: TAction;
+    actCheckAll: TAction;
+    CheckAll1: TMenuItem;
+    Savedcheckeditems1: TMenuItem;
+    actUncheckAll: TAction;
+    UncheckAll1: TMenuItem;
+    N1: TMenuItem;
+    InstallChecked1: TMenuItem;
+    N2: TMenuItem;
+    chkAcceptEULAs: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
     procedure actInstallCheckedExecute(Sender: TObject);
+    procedure actCheckAllExecute(Sender: TObject);
+    procedure actUncheckAllExecute(Sender: TObject);
+    procedure actSaveCheckedListExecute(Sender: TObject);
   private
     const
       BDS_USER_ROOT = '\Software\Embarcadero\BDS\';
+    procedure SetExecLine(const Value: string);
     var
       FPastFirstItem: Boolean;
       FFinished: Boolean;
@@ -38,10 +53,13 @@ type
     procedure SetPackageCount(const Value: Integer);
     procedure LoadRADVersionsCombo;
     procedure CleanPackageList;
+    procedure InstallGetItPackage(const GetItName: string);
     function BDSRootPath(const BDSVersion: string): string;
+    function BDSBinDir: string;
     function SelectedBDSVersion: string;
     property PackageCount: Integer write SetPackageCount;
     property DownloadTime: Integer write SetDownloadTime;
+    property ExecLine: string write SetExecLine;
   end;
 
 var
@@ -53,7 +71,8 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Diagnostics, System.Win.Registry, System.StrUtils;
+  System.Diagnostics, System.Win.Registry, System.StrUtils, System.IOUtils,
+  ufrmInstallLog;
 
 procedure TfrmAutoGetItMain.FormCreate(Sender: TObject);
 begin
@@ -61,26 +80,41 @@ begin
   lbPackages.Items.Clear;
 end;
 
-procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
-begin
-{
+procedure TfrmAutoGetItMain.InstallGetItPackage(const GetItName: string);
 var
-  space: Integer;
-  name, vr, desc: string;
+  CmdArgs: string;
 begin
-  space := Pos(' ', GetItLine);
-  name := LeftStr(GetItLine, space - 1);
+  if chkAcceptEULAs.Checked then
+    CmdArgs := '-ae'
+  else
+    CmdArgs := EmptyStr;
 
-  vr := Trim(MidStr(GetItLine, space, Length(GetItLine)));
-  space := Pos(' ', vr);
-  desc := Trim(MidStr(vr, space + 1, Length(vr)));
-  vr := Trim(LeftStr(vr, space));
-}
+  CmdArgs := Format('%s -i="%s"', [CmdArgs, GetItName]);
+
+  frmInstallLog.InstallGetItPackage(BDSBinDir, CmdArgs);
+end;
+
+procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
+var
+  GetItLine: string;
+  GetItName: string;
+  space: Integer;
+begin
+  for var i := 0 to lbPackages.Count - 1 do
+    if lbPackages.Checked[i] then begin
+      GetItLine := lbPackages.Items[i];
+
+      space := Pos(' ', GetItLine);
+      GetItName := LeftStr(GetItLine, space - 1);
+
+      InstallGetItPackage(GetItName);
+    end;
 end;
 
 procedure TfrmAutoGetItMain.actRefreshExecute(Sender: TObject);
 var
   SortField: string;
+  CmdLineArgs: string;
 begin
   lbPackages.Items.Clear;
   FPastFirstItem := False;
@@ -92,13 +126,16 @@ begin
     2: SortField := 'date';
   end;
 
-  DosCommand.CurrentDir := 'C:\Program Files (x86)\Embarcadero\Studio\21.0\bin'; // BDSRootPath(SelectedBDSVersion);
-  DosCommand.CommandLine := Format('GetItCmd.exe -l=%s --sort=% --filter=%s',
-                    [edtNameFilter.Text, SortField, IfThen(chkInstalledOnly.Checked, 'installed', 'all')]);
+  DosCommand.CurrentDir := BDSBinDir;
+  CmdLineArgs := Format('-l=%s --sort=%s --filter=%s', [edtNameFilter.Text, SortField,
+                        IfThen(chkInstalledOnly.Checked, 'installed', 'all')]);
+
+  DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
+  ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
 
   Screen.Cursor := crHourGlass;
   try
-    var CmdTime: TStopWatch;
+    var CmdTime := TStopWatch.Create;
     CmdTime.Start;
 
     DosCommand.Execute;
@@ -107,12 +144,32 @@ begin
     until FFinished;
     CleanPackageList;
 
-    cmdTime.Stop;
+    CmdTime.Stop;
     DownloadTime := cmdTime.Elapsed.Seconds;
     PackageCount := lbPackages.Items.Count;
   finally
     Screen.Cursor := crDefault;
   end;
+end;
+
+procedure TfrmAutoGetItMain.actSaveCheckedListExecute(Sender: TObject);
+begin
+  ShowMessage('this feature not yet implemented');
+end;
+
+procedure TfrmAutoGetItMain.actCheckAllExecute(Sender: TObject);
+begin
+  lbPackages.CheckAll(TCheckBoxState.cbChecked);
+end;
+
+procedure TfrmAutoGetItMain.actUncheckAllExecute(Sender: TObject);
+begin
+  lbPackages.CheckAll(TCheckBoxState.cbUnchecked);
+end;
+
+function TfrmAutoGetItMain.BDSBinDir: string;
+begin
+  Result := TPath.Combine(BDSRootPath(SelectedBDSVersion), 'bin');
 end;
 
 function TfrmAutoGetItMain.BDSRootPath(const BDSVersion: string): string;
@@ -129,9 +186,10 @@ begin
 end;
 
 procedure TfrmAutoGetItMain.CleanPackageList;
-{ not sure if there's a bug in DosCommand or what but the list of packages
+{ Not sure if there's a bug in DosCommand or what but the list of packages
   often contains cut-off entries that are then completed on the next line,
-  so this routine goes through and deletes those partial entries }
+  so this routine goes through and deletes those partial entries.
+}
 var
   LastPackage: string;
 begin
@@ -140,7 +198,8 @@ begin
     LastPackage := lbPackages.Items[i-1];
 
     if (LastPackage.Length > 0) and StartsText(LastPackage, lbPackages.Items[i]) then
-      lbPackages.Items.Delete(i - 1);
+      lbPackages.Items.Delete(i - 1)
+    else
   end;
 end;
 
@@ -201,6 +260,12 @@ end;
 procedure TfrmAutoGetItMain.SetDownloadTime(const Value: Integer);
 begin
   StatusBar.Panels[1].Text := Format('%d seconds', [Value]);
+  StatusBar.Update;
+end;
+
+procedure TfrmAutoGetItMain.SetExecLine(const Value: string);
+begin
+  StatusBar.Panels[2].Text := Value;
   StatusBar.Update;
 end;
 

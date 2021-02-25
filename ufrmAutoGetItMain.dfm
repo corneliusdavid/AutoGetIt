@@ -23,7 +23,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Height = 89
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 848
     DesignSize = (
       852
       89)
@@ -54,13 +53,15 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Style = csDropDownList
       Anchors = [akTop, akRight]
       TabOrder = 1
-      ExplicitLeft = 704
     end
     object rgrpSortBy: TRadioGroup
       Left = 183
       Top = 10
       Width = 210
       Height = 46
+      Hint = 
+        'This parameter is passed to the command line but does not seem t' +
+        'o have any effect.'
       Caption = 'Sort By'
       Columns = 3
       ItemIndex = 0
@@ -71,8 +72,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 2
     end
     object chkInstalledOnly: TCheckBox
-      Left = 416
-      Top = 28
+      Left = 408
+      Top = 17
       Width = 97
       Height = 17
       Caption = 'Installed Only'
@@ -89,6 +90,16 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       LabelPosition = lpLeft
       TabOrder = 4
       TextHint = 'leave blank to include all packages'
+    end
+    object chkAcceptEULAs: TCheckBox
+      Left = 408
+      Top = 39
+      Width = 118
+      Height = 17
+      Caption = 'Accept EULAs'
+      Checked = True
+      State = cbChecked
+      TabOrder = 5
     end
   end
   object lbPackages: TCheckListBox
@@ -108,10 +119,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       'two'
       'three')
     ParentFont = False
+    PopupMenu = mnuCheckListPopup
     TabOrder = 1
-    ExplicitTop = 81
-    ExplicitWidth = 848
-    ExplicitHeight = 488
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -128,9 +137,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       item
         Width = 50
       end>
-    ExplicitLeft = 432
-    ExplicitTop = 296
-    ExplicitWidth = 0
   end
   object aclAutoGetit: TActionList
     Left = 216
@@ -143,6 +149,20 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Caption = 'Install Checked'
       OnExecute = actInstallCheckedExecute
     end
+    object actSaveCheckedList: TAction
+      Caption = 'Saved checked items'
+      ShortCut = 16467
+      OnExecute = actSaveCheckedListExecute
+    end
+    object actCheckAll: TAction
+      Caption = 'Check All'
+      ShortCut = 16449
+      OnExecute = actCheckAllExecute
+    end
+    object actUncheckAll: TAction
+      Caption = 'Uncheck All'
+      OnExecute = actUncheckAllExecute
+    end
   end
   object DosCommand: TDosCommand
     InputToOutput = False
@@ -152,5 +172,27 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     OnTerminated = DosCommandTerminated
     Left = 225
     Top = 265
+  end
+  object mnuCheckListPopup: TPopupMenu
+    Left = 224
+    Top = 328
+    object CheckAll1: TMenuItem
+      Action = actCheckAll
+    end
+    object UncheckAll1: TMenuItem
+      Action = actUncheckAll
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object InstallChecked1: TMenuItem
+      Action = actInstallChecked
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Savedcheckeditems1: TMenuItem
+      Action = actSaveCheckedList
+    end
   end
 end
