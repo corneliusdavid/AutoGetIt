@@ -3,7 +3,7 @@ The idea with this small Delphi program is to automate the [GetIt package manage
 
 This Delphi program uses the DosCommand component (available on GetIt) to shell out to the GetItCmd.exe and show all the packages in a CheckListBox. You then simply check off all the packages you want to install, click the Install button, and sit back and watch them all get installed (some require authorization so it's not completely unattended). You can also right+click on this list to select all or none, or uninstall the checked packages instead, or install/uninstall just one package at a time.
 
-_Written in Delphi 10.4.1, tested on the update to Delphi 10.4.2_
+_Written in Delphi 10.4.1, tested on the update to Delphi 10.4.2: installed over 75 packages in less than 30 mintues!_
 
 ## Batch files
 
