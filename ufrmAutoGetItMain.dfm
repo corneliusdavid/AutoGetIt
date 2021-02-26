@@ -23,6 +23,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Height = 89
     Align = alTop
     TabOrder = 0
+    ExplicitTop = -6
     DesignSize = (
       914
       89)
@@ -35,6 +36,20 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Anchors = [akTop, akRight]
       Caption = 'RAD Studio Version:'
       ExplicitLeft = 550
+    end
+    object Label2: TLabel
+      Left = 495
+      Top = 69
+      Width = 214
+      Height = 16
+      Alignment = taRightJustify
+      Caption = 'All EULAs are automatically accepted.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGrayText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
     object btnRefresh: TBitBtn
       Left = 16
@@ -99,7 +114,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 2
     end
     object chkInstalledOnly: TCheckBox
-      Left = 404
+      Left = 399
       Top = 30
       Width = 103
       Height = 17
@@ -119,14 +134,21 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TextHint = 'leave blank to include all packages'
     end
     object chkAcceptEULAs: TCheckBox
-      Left = 598
-      Top = 58
+      Left = 605
+      Top = 50
       Width = 105
       Height = 17
       Alignment = taLeftJustify
       Anchors = [akTop, akRight]
       Caption = 'Accept EULAs'
       Checked = True
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGrayText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       State = cbChecked
       TabOrder = 5
     end

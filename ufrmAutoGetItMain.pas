@@ -46,6 +46,7 @@ type
     Installhighlightedpackage1: TMenuItem;
     actUninstallOne: TAction;
     Uninstallhighlightedpackage1: TMenuItem;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -106,6 +107,9 @@ procedure TfrmAutoGetItMain.lbPackagesClick(Sender: TObject);
 begin
   actInstallOne.Enabled := lbPackages.ItemIndex > -1;
   actUninstallOne.Enabled := lbPackages.ItemIndex > -1;
+
+  actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+  actUninstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
 end;
 
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
@@ -133,7 +137,7 @@ procedure TfrmAutoGetItMain.actInstallOneExecute(Sender: TObject);
 begin
   frmInstallLog.Initialize;
   frmInstallLog.ProcessGetItPackage(BDSBinDir,
-                   Format('-i="%s"', [ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])]),
+                   Format('-ae -i="%s"', [ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])]),
                    1, 1, FInstallAborted);
   frmInstallLog.NotifyFinished;
 end;
