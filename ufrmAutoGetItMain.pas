@@ -341,11 +341,10 @@ end;
 
 procedure TfrmAutoGetItMain.DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
 begin
-{  if not FPastFirstItem then begin
+  if not FPastFirstItem then begin
     if StartsText('--', ANewLine) then
       FPastFirstItem := True;
-  end else}
-  if ContainsText(ANewLine, 'command finished') then
+  end else if ContainsText(ANewLine, 'command finished') then
     FFinished := True
   else if not FFinished and (Trim(ANewLine).Length > 0) then
     if lbPackages.Items.IndexOf(ANewLine) = -1 then
