@@ -60,6 +60,7 @@ type
     procedure actInstallOneExecute(Sender: TObject);
     procedure actUninstallOneExecute(Sender: TObject);
     procedure lbPackagesClick(Sender: TObject);
+    procedure rgrpSortByClick(Sender: TObject);
   private
     const
       BDS_USER_ROOT = '\Software\Embarcadero\BDS\';
@@ -77,6 +78,8 @@ type
     procedure ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
+    function GetItInstallCmd(const GetItPackageName: string): string;
+    function GetItUninstallCmd(const GetItPackageName: string): string;
     function ParseGetItName(const GetItLine: string): string;
     function CountChecked: Integer;
     function SelectedBDSVersion: string;
@@ -97,31 +100,54 @@ uses
   System.Diagnostics, System.Win.Registry, System.StrUtils, System.IOUtils,
   ufrmInstallLog;
 
+const
+  GETIT_VR_NOT_SUPPORTED_MSG = 'This version of Delphi''s GetItCmd.exe is not supported.';
+
 procedure TfrmAutoGetItMain.FormCreate(Sender: TObject);
 begin
   LoadRADVersionsCombo;
   lbPackages.Items.Clear;
 end;
 
+function TfrmAutoGetItMain.GetItInstallCmd(const GetItPackageName: string): string;
+begin
+  if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
+    Result := Format('-accept_eulas -i"%s"', [Result, GetItPackageName])
+  else if StartsText('21', cmbRADVersions.Text) then
+    Result := Format('-ae -i="%s"', [Result, GetItPackageName])
+  else
+    raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
+end;
+
+function TfrmAutoGetItMain.GetItUninstallCmd(const GetItPackageName: string): string;
+begin
+  if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
+    Result := Format('-u"%s"', [GetItPackageName])
+  else if StartsText('21', cmbRADVersions.Text) then
+    Result := Format('-u="%s"', [GetItPackageName])
+  else
+    raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
+end;
+
 procedure TfrmAutoGetItMain.lbPackagesClick(Sender: TObject);
 begin
-  actInstallOne.Enabled := lbPackages.ItemIndex > -1;
-  actUninstallOne.Enabled := lbPackages.ItemIndex > -1;
+  actInstallOne.Enabled := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
+  actUninstallOne.Enabled := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
 
-  actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
-  actUninstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+  if actInstallOne.Enabled then begin
+    actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+    actUninstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+  end else begin
+    actInstallOne.Caption := 'Install ...';
+    actUninstallOne.Caption := 'Install ...';
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
   ProcessCheckedPackages(function (const GetItName: string): string
       begin
-        if chkAcceptEULAs.Checked then
-          Result := '-ae'
-        else
-          Result := EmptyStr;
-
-        Result := Format('%s -i="%s"', [Result, GetItName]);
+        Result := GetItInstallCmd(GetItName);
       end);
 end;
 
@@ -129,7 +155,7 @@ procedure TfrmAutoGetItMain.actUninstallCheckedExecute(Sender: TObject);
 begin
   ProcessCheckedPackages(function (const GetItName: string): string
       begin
-        Result := Format('-u="%s"', [GetItName]);
+        Result := GetItUninstallCmd(GetItName);
       end);
 end;
 
@@ -137,8 +163,9 @@ procedure TfrmAutoGetItMain.actInstallOneExecute(Sender: TObject);
 begin
   frmInstallLog.Initialize;
   frmInstallLog.ProcessGetItPackage(BDSBinDir,
-                   Format('-ae -i="%s"', [ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])]),
-                   1, 1, FInstallAborted);
+             GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+             1, 1, FInstallAborted);
+
   frmInstallLog.NotifyFinished;
 end;
 
@@ -146,8 +173,8 @@ procedure TfrmAutoGetItMain.actUninstallOneExecute(Sender: TObject);
 begin
   frmInstallLog.Initialize;
   frmInstallLog.ProcessGetItPackage(BDSBinDir,
-                   Format('-u="%s"', [ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])]),
-                   1, 1, FInstallAborted);
+                     GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+                     1, 1, FInstallAborted);
   frmInstallLog.NotifyFinished;
 end;
 
@@ -167,8 +194,16 @@ begin
   end;
 
   DosCommand.CurrentDir := BDSBinDir;
-  CmdLineArgs := Format('-l=%s --sort=%s --filter=%s', [edtNameFilter.Text, SortField,
-                        IfThen(chkInstalledOnly.Checked, 'installed', 'all')]);
+
+  if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
+    CmdLineArgs := Format('-listavailable:%s -sort:%s -filter:%s ', [edtNameFilter.Text, SortField,
+                        IfThen(chkInstalledOnly.Checked, 'Installed', 'All')])
+  else if StartsText('21', cmbRADVersions.Text) then
+    CmdLineArgs := Format('--list=%s --sort=%s --filter=%s', [
+                        edtNameFilter.Text, SortField,
+                        IfThen(chkInstalledOnly.Checked, 'installed', 'all')])
+  else
+    raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
 
   DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
   ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
@@ -306,10 +341,11 @@ end;
 
 procedure TfrmAutoGetItMain.DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
 begin
-  if not FPastFirstItem then begin
+{  if not FPastFirstItem then begin
     if StartsText('--', ANewLine) then
       FPastFirstItem := True;
-  end else if ContainsText(ANewLine, 'command finished') then
+  end else}
+  if ContainsText(ANewLine, 'command finished') then
     FFinished := True
   else if not FFinished and (Trim(ANewLine).Length > 0) then
     if lbPackages.Items.IndexOf(ANewLine) = -1 then
@@ -323,9 +359,9 @@ end;
 
 procedure TfrmAutoGetItMain.LoadRADVersionsCombo;
 const
-  MAX_VERSIONS = 6;
-  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('16.0', '17.0', '18.0', '19.0', '20.0', '21.0');
-  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('XE8', '10 Seattle', '10.1 Berlin', '10.2 Tokyo', '10.3 Rio', '10.4 Sydney');
+  MAX_VERSIONS = 3;
+  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0');
+  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney');
 begin
   cmbRADVersions.Items.Clear;
 
@@ -383,6 +419,16 @@ begin
       Break;
   end;
   frmInstallLog.NotifyFinished;
+end;
+
+procedure TfrmAutoGetItMain.rgrpSortByClick(Sender: TObject);
+begin
+  if (StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text)) and
+     (rgrpSortBy.ItemIndex = 2) then
+  begin
+    rgrpSortBy.ItemIndex := 0;
+    ShowMessage('Sorting by Date not available with GetItCmd for RAD Studio 19 or 20');
+  end;
 end;
 
 function TfrmAutoGetItMain.SelectedBDSVersion: string;

@@ -23,7 +23,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Height = 89
     Align = alTop
     TabOrder = 0
-    ExplicitTop = -6
     DesignSize = (
       914
       89)
@@ -112,6 +111,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         'Vendor'
         'Date')
       TabOrder = 2
+      OnClick = rgrpSortByClick
     end
     object chkInstalledOnly: TCheckBox
       Left = 399
