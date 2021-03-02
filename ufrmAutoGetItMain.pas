@@ -183,51 +183,56 @@ var
   SortField: string;
   CmdLineArgs: string;
 begin
-  lbPackages.Items.Clear;
-  FPastFirstItem := False;
-  FFinished := False;
-
-  case rgrpSortBy.ItemIndex of
-    0: SortField := 'name';
-    1: SortField := 'vendor';
-    2: SortField := 'date';
-  end;
-
-  DosCommand.CurrentDir := BDSBinDir;
-
-  if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
-    CmdLineArgs := Format('-listavailable:%s -sort:%s -filter:%s ', [edtNameFilter.Text, SortField,
-                        IfThen(chkInstalledOnly.Checked, 'Installed', 'All')])
-  else if StartsText('21', cmbRADVersions.Text) then
-    CmdLineArgs := Format('--list=%s --sort=%s --filter=%s', [
-                        edtNameFilter.Text, SortField,
-                        IfThen(chkInstalledOnly.Checked, 'installed', 'all')])
-  else
-    raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
-
-  DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
-  ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
-
-  Screen.Cursor := crHourGlass;
+  actRefresh.Enabled := False;
   try
-    var CmdTime := TStopWatch.Create;
-    CmdTime.Start;
+    lbPackages.Items.Clear;
+    FPastFirstItem := False;
+    FFinished := False;
 
-    DosCommand.Execute;
-    repeat
-      Application.ProcessMessages;
-    until FFinished;
-    CleanPackageList;
+    case rgrpSortBy.ItemIndex of
+      0: SortField := 'name';
+      1: SortField := 'vendor';
+      2: SortField := 'date';
+    end;
 
-    CmdTime.Stop;
-    DownloadTime := cmdTime.Elapsed.Seconds;
-    PackageCount := lbPackages.Items.Count;
+    DosCommand.CurrentDir := BDSBinDir;
+
+    if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
+      CmdLineArgs := Format('-listavailable:%s -sort:%s -filter:%s ', [edtNameFilter.Text, SortField,
+                          IfThen(chkInstalledOnly.Checked, 'Installed', 'All')])
+    else if StartsText('21', cmbRADVersions.Text) then
+      CmdLineArgs := Format('--list=%s --sort=%s --filter=%s', [
+                          edtNameFilter.Text, SortField,
+                          IfThen(chkInstalledOnly.Checked, 'installed', 'all')])
+    else
+      raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
+
+    DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
+    ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
+
+    Screen.Cursor := crHourGlass;
+    try
+      var CmdTime := TStopWatch.Create;
+      CmdTime.Start;
+
+      DosCommand.Execute;
+      repeat
+        Application.ProcessMessages;
+      until FFinished;
+      CleanPackageList;
+
+      CmdTime.Stop;
+      DownloadTime := cmdTime.Elapsed.Seconds;
+      PackageCount := lbPackages.Items.Count;
+    finally
+      Screen.Cursor := crDefault;
+    end;
+
+    actInstallChecked.Enabled := lbPackages.Items.Count > 0;
+    actUninstallChecked.Enabled := lbPackages.Items.Count > 0;
   finally
-    Screen.Cursor := crDefault;
+    actRefresh.Enabled := True;
   end;
-
-  actInstallChecked.Enabled := lbPackages.Items.Count > 0;
-  actUninstallChecked.Enabled := lbPackages.Items.Count > 0;
 end;
 
 procedure TfrmAutoGetItMain.actSaveCheckedListExecute(Sender: TObject);
