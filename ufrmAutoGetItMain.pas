@@ -112,9 +112,9 @@ end;
 function TfrmAutoGetItMain.GetItInstallCmd(const GetItPackageName: string): string;
 begin
   if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
-    Result := Format('-accept_eulas -i"%s"', [Result, GetItPackageName])
+    Result := Format('-accept_eulas -i"%s"', [GetItPackageName])
   else if StartsText('21', cmbRADVersions.Text) then
-    Result := Format('-ae -i="%s"', [Result, GetItPackageName])
+    Result := Format('-ae -i="%s"', [GetItPackageName])
   else
     raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
 end;
@@ -136,10 +136,10 @@ begin
 
   if actInstallOne.Enabled then begin
     actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
-    actUninstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+    actUninstallOne.Caption := 'Uninstall ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
   end else begin
     actInstallOne.Caption := 'Install ...';
-    actUninstallOne.Caption := 'Install ...';
+    actUninstallOne.Caption := 'Uninstall ...';
   end;
 end;
 
