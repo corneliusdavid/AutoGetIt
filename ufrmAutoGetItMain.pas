@@ -6,7 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus;
+  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.WinXPanels,
+  System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
+  Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -47,6 +49,14 @@ type
     actUninstallOne: TAction;
     Uninstallhighlightedpackage1: TMenuItem;
     Label2: TLabel;
+    pnlLeftSide: TStackPanel;
+    lbCategories: TListBox;
+    BindSourceDBCategories: TBindSourceDB;
+    BindingsList1: TBindingsList;
+    LinkListControlToField1: TLinkListControlToField;
+    Label3: TLabel;
+    lblNumElements: TLabel;
+    LinkPropertyToFieldNumElements: TLinkPropertyToField;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -61,6 +71,7 @@ type
     procedure actUninstallOneExecute(Sender: TObject);
     procedure lbPackagesClick(Sender: TObject);
     procedure rgrpSortByClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     const
       BDS_USER_ROOT = '\Software\Embarcadero\BDS\';
@@ -98,10 +109,15 @@ implementation
 
 uses
   System.Diagnostics, System.Win.Registry, System.StrUtils, System.IOUtils,
-  ufrmInstallLog;
+  ufrmInstallLog, udmGetItAPI;
 
 const
   GETIT_VR_NOT_SUPPORTED_MSG = 'This version of Delphi''s GetItCmd.exe is not supported.';
+
+procedure TfrmAutoGetItMain.FormActivate(Sender: TObject);
+begin
+  dmGetItAPI.RESTReqCategories.Execute;
+end;
 
 procedure TfrmAutoGetItMain.FormCreate(Sender: TObject);
 begin

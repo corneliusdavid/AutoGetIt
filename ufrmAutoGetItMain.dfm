@@ -13,6 +13,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 16
@@ -197,9 +198,9 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     end
   end
   object lbPackages: TCheckListBox
-    Left = 0
+    Left = 177
     Top = 89
-    Width = 914
+    Width = 737
     Height = 461
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -216,6 +217,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     PopupMenu = mnuCheckListPopup
     TabOrder = 1
     OnClick = lbPackagesClick
+    ExplicitLeft = 137
+    ExplicitWidth = 777
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -232,6 +235,61 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       item
         Width = 50
       end>
+  end
+  object pnlLeftSide: TStackPanel
+    Left = 0
+    Top = 89
+    Width = 177
+    Height = 461
+    Align = alLeft
+    ControlCollection = <
+      item
+        Control = Label3
+        HorizontalPositioning = sphpFill
+        VerticalPositioning = spvpTop
+      end
+      item
+        Control = lbCategories
+        HorizontalPositioning = sphpFill
+        VerticalPositioning = spvpTop
+      end
+      item
+        Control = lblNumElements
+      end>
+    TabOrder = 3
+    ExplicitTop = 92
+    object Label3: TLabel
+      Left = 1
+      Top = 1
+      Width = 175
+      Height = 16
+      Align = alTop
+      Caption = 'Categories'
+    end
+    object lbCategories: TListBox
+      Left = 1
+      Top = 19
+      Width = 175
+      Height = 262
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ItemHeight = 18
+      Items.Strings = (
+        'Category One')
+      ParentFont = False
+      TabOrder = 0
+    end
+    object lblNumElements: TLabel
+      Left = 1
+      Top = 283
+      Width = 76
+      Height = 16
+      Caption = 'Packages: 13'
+    end
   end
   object aclAutoGetit: TActionList
     Left = 216
@@ -376,5 +434,33 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Title = 'Clear checked first?'
     Left = 352
     Top = 256
+  end
+  object BindSourceDBCategories: TBindSourceDB
+    DataSet = dmGetItAPI.tblCategories
+    ScopeMappings = <>
+    Left = 56
+    Top = 168
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 220
+    Top = 421
+    object LinkListControlToField1: TLinkListControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCategories
+      FieldName = 'Name'
+      Control = lbCategories
+      FillExpressions = <>
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+    object LinkPropertyToFieldNumElements: TLinkPropertyToField
+      DataSource = BindSourceDBCategories
+      FieldName = 'NumElements'
+      Component = lblNumElements
+      CustomFormat = #39'Packages: '#39' + %s'
+      ComponentProperty = 'Caption'
+    end
   end
 end
