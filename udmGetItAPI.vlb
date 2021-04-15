@@ -1,152 +1,152 @@
 ﻿[tblCatalogInfoImage]
-Coordinates=300,301,113,33
+Coordinates=300,301,130,36
 
 [tblCatalogInfoDescription]
-Coordinates=300,353,140,33
+Coordinates=300,353,159,36
 
 [tblCatalogInfoLibGenerateTmpUrl]
-Coordinates=478,1,179,33
+Coordinates=478,1,207,36
 
 [tblCatalogInfoTargetPath]
-Coordinates=300,405,137,33
+Coordinates=300,405,158,36
 
 [tblCatalogInfoTypeDescription]
-Coordinates=478,53,164,33
+Coordinates=478,53,188,36
 
 [RESTReqCategories]
-Coordinates=601,10,114,33
+Coordinates=601,10,134,36
 Visible=False
 
 [tblCatalogInfoActions]
-Coordinates=300,457,121,33
+Coordinates=300,457,137,36
 
 [tblCatalogInfoVendorUrl]
-Coordinates=300,509,133,33
+Coordinates=300,509,152,36
 
 [tblCatalogInfoName]
-Coordinates=300,561,111,33
+Coordinates=300,561,128,36
 
 [tblCatalogInfoRequireElevation]
-Coordinates=478,105,167,33
+Coordinates=478,105,193,36
 
 [tblCatalogInfo]
-Coordinates=10,10,101,717
+Coordinates=10,10,121,872
 
 [tblCatalogInfoLibSignCloudfrontUrl]
-Coordinates=478,157,188,33
+Coordinates=478,157,214,36
 
 [tblCatalogInfoTypeId]
-Coordinates=300,613,116,33
+Coordinates=300,613,134,36
 
 [tblCatalogInfoLibProjectUrl]
-Coordinates=478,209,148,33
+Coordinates=478,209,169,36
 
 [tblCategoriesName]
-Coordinates=300,665,108,33
+Coordinates=300,665,125,36
 
 [tblCategories]
-Coordinates=190,20,80,105
+Coordinates=190,20,91,124
 
 [tblCatalogInfoId]
-Coordinates=300,717,92,33
+Coordinates=300,717,105,36
 
 [RESTRespDSAdapterCategories]
-Coordinates=478,261,173,33
+Coordinates=478,261,203,36
 
 [tblCatalogInfoTags]
-Coordinates=300,769,107,33
+Coordinates=300,769,123,36
 
 [RESTReqCatalogInfo]
-Coordinates=474,10,117,33
+Coordinates=474,10,138,36
 Visible=False
 
 [tblCatalogInfoLibCloudfrontUrl]
-Coordinates=478,313,165,33
+Coordinates=478,313,188,36
 
 [tblCatalogInfoLibSize]
-Coordinates=300,821,119,33
+Coordinates=300,821,137,36
 
 [RESTRespCatalogInfo]
-Coordinates=251,10,123,33
+Coordinates=251,10,144,36
 Visible=False
 
 [RESTRespCategories]
-Coordinates=121,10,120,33
+Coordinates=121,10,141,36
 Visible=False
 
 [tblCatalogInfoLibOSes]
-Coordinates=300,873,125,33
+Coordinates=300,873,144,36
 
 [tblCatalogInfoIcon]
-Coordinates=300,925,104,33
+Coordinates=300,925,119,36
 
 [RESTRespDSAdapterCatInfo]
-Coordinates=478,365,155,33
+Coordinates=478,365,183,36
 
 [tblCatalogInfoLibLicenseName]
-Coordinates=478,417,165,33
+Coordinates=478,417,190,36
 
 [tblCatalogInfoVersion]
-Coordinates=300,977,121,33
+Coordinates=300,977,138,36
 
 [RESTClientGetIt]
-Coordinates=725,10,93,33
+Coordinates=725,10,110,36
 Visible=False
 
 [tblCatalogInfoLibUrlProvider]
-Coordinates=478,469,155,33
+Coordinates=478,469,176,36
 
 [tblCatalogInfoLibCodeName]
-Coordinates=478,521,152,33
+Coordinates=478,521,176,36
 
 [tblCatalogInfoVendor]
-Coordinates=300,1029,119,33
+Coordinates=300,1029,136,36
 
 [tblCatalogInfoLibLicense]
-Coordinates=281,1077,137,33
+Coordinates=281,1077,156,36
 
 [tblCatalogInfoPurchaseUrl]
-Coordinates=478,573,144,33
+Coordinates=478,573,165,36
 
 [tblCategoriesNumElements]
-Coordinates=478,625,148,33
+Coordinates=478,625,171,36
 
 [tblCatalogInfoLibCode]
-Coordinates=152,1077,124,33
+Coordinates=152,1077,142,36
 
 [tblCatalogInfoLibAkamaiUrl]
-Coordinates=478,677,149,33
+Coordinates=478,677,171,36
 
 [tblCatalogInfoState]
-Coordinates=43,1077,108,33
+Coordinates=43,1077,124,36
 
 [tblCatalogInfoCompatibility]
-Coordinates=478,729,148,33
+Coordinates=478,729,169,36
 
 [tblCatalogInfoLibUrl]
-Coordinates=478,781,113,33
+Coordinates=478,781,128,36
 
 [tblCatalogInfoProductVersions]
-Coordinates=478,833,165,33
+Coordinates=478,833,189,36
 
 [tblCatalogInfoAllUsers]
-Coordinates=478,885,125,33
+Coordinates=478,885,142,36
 
 [tblCatalogInfoModified]
-Coordinates=478,937,125,33
+Coordinates=478,937,143,36
 
 [tblCatalogInfoCategories]
-Coordinates=478,989,136,33
+Coordinates=478,989,157,36
 
 [tblCatalogInfoLicenseState]
-Coordinates=478,1041,147,33
+Coordinates=478,1041,169,36
 
 [tblCatalogInfoLibPlatforms]
-Coordinates=459,1077,146,33
+Coordinates=459,1077,166,36
 
 [tblCategoriesId]
-Coordinates=478,1129,89,33
+Coordinates=478,1129,101,36
 
 [tblCatalogInfoLibSignAkamaiUrl]
-Coordinates=704,1,172,33
+Coordinates=704,1,197,36
 

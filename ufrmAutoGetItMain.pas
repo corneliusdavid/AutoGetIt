@@ -8,7 +8,8 @@ uses
   System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
   DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.WinXPanels,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
-  Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope;
+  Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, Vcl.Bind.Grid,
+  Data.Bind.Grid, Vcl.Grids, Vcl.ControlList, Vcl.Bind.ControlList;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -57,6 +58,14 @@ type
     Label3: TLabel;
     lblNumElements: TLabel;
     LinkPropertyToFieldNumElements: TLinkPropertyToField;
+    pnlPackage: TPanel;
+    lstPackages: TControlList;
+    lblPkgName: TLabel;
+    Label5: TLabel;
+    BindSourceDBCatalogInfo: TBindSourceDB;
+    LinkPropertyToFieldName: TLinkPropertyToField;
+    LinkPropertyToFieldDescription: TLinkPropertyToField;
+    LinkGridToDataSourceBindSourceDBCatalogInfo: TLinkGridToDataSource;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -85,7 +94,6 @@ type
     procedure SetDownloadTime(const Value: Integer);
     procedure SetPackageCount(const Value: Integer);
     procedure LoadRADVersionsCombo;
-    procedure CleanPackageList;
     procedure ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
@@ -201,45 +209,16 @@ var
 begin
   actRefresh.Enabled := False;
   try
-    lbPackages.Items.Clear;
-    FPastFirstItem := False;
-    FFinished := False;
-
-    case rgrpSortBy.ItemIndex of
-      0: SortField := 'name';
-      1: SortField := 'vendor';
-      2: SortField := 'date';
-    end;
-
-    DosCommand.CurrentDir := BDSBinDir;
-
-    if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
-      CmdLineArgs := Format('-listavailable:%s -sort:%s -filter:%s ', [edtNameFilter.Text, SortField,
-                          IfThen(chkInstalledOnly.Checked, 'Installed', 'All')])
-    else if StartsText('21', cmbRADVersions.Text) then
-      CmdLineArgs := Format('--list=%s --sort=%s --filter=%s', [
-                          edtNameFilter.Text, SortField,
-                          IfThen(chkInstalledOnly.Checked, 'installed', 'all')])
-    else
-      raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
-
-    DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
-    ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
-
     Screen.Cursor := crHourGlass;
     try
       var CmdTime := TStopWatch.Create;
       CmdTime.Start;
 
-      DosCommand.Execute;
-      repeat
-        Application.ProcessMessages;
-      until FFinished;
-      CleanPackageList;
+      dmGetItAPI.GetCatalogInfo(edtNameFilter.Text, dmGetItAPI.tblCategoriesId.AsString);
 
       CmdTime.Stop;
       DownloadTime := cmdTime.Elapsed.Seconds;
-      PackageCount := lbPackages.Items.Count;
+      PackageCount := dmGetItAPI.tblCategories.RecordCount;
     finally
       Screen.Cursor := crDefault;
     end;
@@ -329,26 +308,6 @@ begin
       Result := reg.ReadString('RootDir');
   finally
     reg.Free;
-  end;
-end;
-
-procedure TfrmAutoGetItMain.CleanPackageList;
-{ Not sure if there's a bug in DosCommand or what but the list of packages
-  often contains cut-off entries that are then completed on the next line,
-  like it misinterpreted a line break, so this routine goes through and
-  deletes those partial entries by checking to see if the previous line
-  is the start of the current line.
-}
-var
-  LastPackage: string;
-begin
-  LastPackage := EmptyStr;
-  for var i := lbPackages.Count - 1 downto 1 do begin
-    LastPackage := lbPackages.Items[i-1];
-
-    if (LastPackage.Length > 0) and StartsText(LastPackage, lbPackages.Items[i]) then
-      lbPackages.Items.Delete(i - 1)
-    else
   end;
 end;
 

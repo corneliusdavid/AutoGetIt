@@ -53,7 +53,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     end
     object btnRefresh: TBitBtn
       Left = 16
-      Top = 12
+      Top = 17
       Width = 161
       Height = 39
       Action = actRefresh
@@ -197,29 +197,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 6
     end
   end
-  object lbPackages: TCheckListBox
-    Left = 177
-    Top = 89
-    Width = 737
-    Height = 461
-    Align = alClient
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Consolas'
-    Font.Style = []
-    ItemHeight = 15
-    Items.Strings = (
-      'one'
-      'two'
-      'three')
-    ParentFont = False
-    PopupMenu = mnuCheckListPopup
-    TabOrder = 1
-    OnClick = lbPackagesClick
-    ExplicitLeft = 137
-    ExplicitWidth = 777
-  end
   object StatusBar: TStatusBar
     Left = 0
     Top = 550
@@ -256,7 +233,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       item
         Control = lblNumElements
       end>
-    TabOrder = 3
+    TabOrder = 2
     ExplicitTop = 92
     object Label3: TLabel
       Left = 1
@@ -291,9 +268,85 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Caption = 'Packages: 13'
     end
   end
+  object pnlPackage: TPanel
+    Left = 177
+    Top = 89
+    Width = 737
+    Height = 461
+    Align = alClient
+    TabOrder = 3
+    ExplicitLeft = 464
+    ExplicitTop = 370
+    ExplicitWidth = 498
+    ExplicitHeight = 41
+    object lbPackages: TCheckListBox
+      Left = 1
+      Top = 1
+      Width = 735
+      Height = 208
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ItemHeight = 15
+      Items.Strings = (
+        'one'
+        'two'
+        'three')
+      ParentFont = False
+      PopupMenu = mnuCheckListPopup
+      TabOrder = 0
+      OnClick = lbPackagesClick
+      ExplicitLeft = 0
+      ExplicitTop = 124
+      ExplicitWidth = 737
+    end
+    object lstPackages: TControlList
+      Left = 1
+      Top = 209
+      Width = 735
+      Height = 251
+      Align = alClient
+      ItemCount = 4
+      ItemHeight = 90
+      ItemIndex = 0
+      ItemMargins.Left = 0
+      ItemMargins.Top = 0
+      ItemMargins.Right = 0
+      ItemMargins.Bottom = 0
+      ParentColor = False
+      TabOrder = 1
+      object lblPkgName: TLabel
+        Left = 3
+        Top = 4
+        Width = 178
+        Height = 19
+        Caption = 'LockBox VCL and FMX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 3
+        Top = 26
+        Width = 502
+        Height = 55
+        AutoSize = False
+        Caption = 
+          'LockBox is a Delphi and C++Builder library for cryptography.'#13#10#13#10 +
+          'Supported on platforms: Win32, Win64, Android, OS X.'
+        WordWrap = True
+      end
+    end
+  end
   object aclAutoGetit: TActionList
-    Left = 216
-    Top = 184
+    Left = 128
+    Top = 304
     object actRefresh: TAction
       Caption = '&Refresh Package List'
       OnExecute = actRefreshExecute
@@ -351,12 +404,12 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     MaxTimeAfterLastOutput = 30
     OnNewLine = DosCommandNewLine
     OnTerminated = DosCommandTerminated
-    Left = 225
-    Top = 265
+    Left = 129
+    Top = 385
   end
   object mnuCheckListPopup: TPopupMenu
-    Left = 224
-    Top = 328
+    Left = 336
+    Top = 120
     object CheckAll1: TMenuItem
       Action = actCheckAll
     end
@@ -402,8 +455,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       end>
     Options = [fdoPathMustExist, fdoFileMustExist]
     Title = 'Open a saved set of GetIt checked names'
-    Left = 348
-    Top = 304
+    Left = 404
+    Top = 392
   end
   object FileSaveDialogSavedChecks: TFileSaveDialog
     DefaultExtension = '*.txt'
@@ -419,8 +472,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       end>
     Options = [fdoOverWritePrompt, fdoCreatePrompt]
     Title = 'Save a set of GetIt checked names'
-    Left = 344
-    Top = 352
+    Left = 416
+    Top = 440
   end
   object dlgClearChecksFirst: TTaskDialog
     Buttons = <>
@@ -432,8 +485,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       'Should all currently checked packages be unchcecked before loadi' +
       'ng the saved list of checked packages?'
     Title = 'Clear checked first?'
-    Left = 352
-    Top = 256
+    Left = 560
+    Top = 456
   end
   object BindSourceDBCategories: TBindSourceDB
     DataSet = dmGetItAPI.tblCategories
@@ -444,8 +497,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
-    Left = 220
-    Top = 421
+    Left = 236
+    Top = 461
     object LinkListControlToField1: TLinkListControlToField
       Category = 'Quick Bindings'
       DataSource = BindSourceDBCategories
@@ -462,5 +515,28 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       CustomFormat = #39'Packages: '#39' + %s'
       ComponentProperty = 'Caption'
     end
+    object LinkPropertyToFieldName: TLinkPropertyToField
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'Name'
+      Component = lblPkgName
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldDescription: TLinkPropertyToField
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'Description'
+      Component = Label5
+      ComponentProperty = 'Caption'
+    end
+    object LinkGridToDataSourceBindSourceDBCatalogInfo: TLinkGridToDataSource
+      DataSource = BindSourceDBCatalogInfo
+      GridControl = lstPackages
+      Columns = <>
+    end
+  end
+  object BindSourceDBCatalogInfo: TBindSourceDB
+    DataSet = dmGetItAPI.tblCatalogInfo
+    ScopeMappings = <>
+    Left = 616
+    Top = 392
   end
 end

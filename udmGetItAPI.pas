@@ -74,6 +74,7 @@ type
     procedure SetBaseURL(const Value: string);
     procedure SetReadTimeout(const Value: Integer);
   public
+    procedure GetCatalogInfo(const SearchText: string; const CategoryIDs: string);
     property BaseURL: string read FBaseURL write SetBaseURL;
     property ConnectTimeout: Integer read FConnectTimeout write SetConnectTimeout;
     property ReadTimeout: Integer read FReadTimeout write SetReadTimeout;
@@ -92,6 +93,19 @@ procedure TdmGetItAPI.DataModuleCreate(Sender: TObject);
 begin
   BaseURL     := DEFAULT_BASE_URL;
   ReadTimeout := DEFAULT_READ_TIMEOUT;
+end;
+
+procedure TdmGetItAPI.GetCatalogInfo(const SearchText, CategoryIDs: string);
+begin
+  RESTReqCategories.Params.Clear;
+
+  if SearchText.Length > 0 then
+    RESTReqCatalogInfo.Params.AddItem('Search', SearchText);
+
+  if CategoryIDs.Length > 0 then
+    RESTReqCatalogInfo.Params.AddItem('Categories', CategoryIDs);
+
+  RESTReqCatalogInfo.Execute;
 end;
 
 procedure TdmGetItAPI.SetBaseURL(const Value: string);

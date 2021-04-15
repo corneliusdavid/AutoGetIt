@@ -16,7 +16,11 @@ object dmGetItAPI: TdmGetItAPI
   object RESTReqCatalogInfo: TRESTRequest
     Client = RESTClientGetIt
     Method = rmPOST
-    Params = <>
+    Params = <
+      item
+        Name = 'Search'
+        Value = 'LockBox'
+      end>
     Resource = 'catalog'
     ResourceSuffix = 'info'
     Response = RESTRespCatalogInfo

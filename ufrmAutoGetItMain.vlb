@@ -22,7 +22,7 @@ Coordinates=383,265,120,33
 Coordinates=294,269,75,33
 
 [lbPackages]
-Coordinates=430,70,71,33
+Coordinates=440,30,71,33
 Visible=False
 
 [actCheckAll]
@@ -126,14 +126,16 @@ Coordinates=130,1,70,33
 Visible=False
 
 [dmGetItAPI.RESTReqCatalogInfo]
-Coordinates=941,89,176,87
+Coordinates=941,89,176,33
+Visible=False
 
 [dmGetItAPI.RESTRespCatalogInfo]
 Coordinates=541,717,182,33
 Visible=False
 
 [dmGetItAPI.RESTClientGetIt]
-Coordinates=941,1,152,69
+Coordinates=941,1,152,33
+Visible=False
 
 [dmGetItAPI.RESTRespCategories]
 Coordinates=541,395,179,33
@@ -152,7 +154,8 @@ Coordinates=72,414,173,33
 Visible=False
 
 [dmGetItAPI.tblCatalogInfo]
-Coordinates=550,10,142,717
+Coordinates=550,10,142,33
+Visible=False
 
 []
 Coordinates=130,80,82,33
@@ -169,5 +172,22 @@ Visible=False
 
 [lblNumElements]
 Coordinates=380,80,95,51
+Visible=True
+
+[BindSourceDBCatalogInfo]
+Coordinates=550,10,143,735
+
+[pnlPackage]
+Coordinates=740,270,71,33
+Visible=False
+
+[Label5]
+Coordinates=770,150,46,51
+
+[lblPkgName]
+Coordinates=760,90,73,51
+
+[lstPackages]
+Coordinates=760,30,73,51
 Visible=True
 
