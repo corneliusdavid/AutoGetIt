@@ -13,7 +13,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Metropolis UI Green');
+  TStyleManager.TrySetStyle('Obsidian');
   Application.CreateForm(TfrmAutoGetItMain, frmAutoGetItMain);
   Application.CreateForm(TfrmInstallLog, frmInstallLog);
   Application.CreateForm(TdmGetItAPI, dmGetItAPI);
