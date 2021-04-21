@@ -9,7 +9,7 @@ uses
   DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.WinXPanels,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
   Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, Vcl.Bind.Grid,
-  Data.Bind.Grid, Vcl.Grids, Vcl.ControlList, Vcl.Bind.ControlList;
+  Data.Bind.Grid, Vcl.Grids, Vcl.ControlList, Vcl.Bind.ControlList, RzLabel;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -50,7 +50,6 @@ type
     actUninstallOne: TAction;
     Uninstallhighlightedpackage1: TMenuItem;
     Label2: TLabel;
-    pnlLeftSide: TStackPanel;
     lbCategories: TListBox;
     BindSourceDBCategories: TBindSourceDB;
     BindingsList1: TBindingsList;
@@ -66,6 +65,27 @@ type
     LinkPropertyToFieldName: TLinkPropertyToField;
     LinkPropertyToFieldDescription: TLinkPropertyToField;
     LinkGridToDataSourceBindSourceDBCatalogInfo: TLinkGridToDataSource;
+    pnlPkgInfo: TPanel;
+    Label4: TLabel;
+    lblVendor: TRzURLLabel;
+    LinkPropertyToFieldVendor: TLinkPropertyToField;
+    LinkPropertyToFieldURL: TLinkPropertyToField;
+    lblPkgSize: TLabel;
+    LinkPropertyToFieldCaption: TLinkPropertyToField;
+    lblPkgType: TLabel;
+    LinkPropertyToFieldCaption2: TLinkPropertyToField;
+    lblPkgTags: TLabel;
+    LinkPropertyToFieldCaption3: TLinkPropertyToField;
+    lblLicense: TRzURLLabel;
+    LinkPropertyToFieldCaption4: TLinkPropertyToField;
+    LinkPropertyToFieldURL2: TLinkPropertyToField;
+    pnlCategoriesPkgs: TPanel;
+    lblModified: TLabel;
+    LinkPropertyToFieldCaption5: TLinkPropertyToField;
+    lblPlatforms: TLabel;
+    LinkPropertyToFieldCaption6: TLinkPropertyToField;
+    lblOSs: TLabel;
+    LinkPropertyToFieldCaption7: TLinkPropertyToField;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);

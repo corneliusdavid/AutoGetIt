@@ -2,7 +2,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   Left = 0
   Top = 0
   Caption = 'Auto GetIt!'
-  ClientHeight = 569
+  ClientHeight = 586
   ClientWidth = 914
   Color = clBtnFace
   Constraints.MinHeight = 300
@@ -199,7 +199,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 550
+    Top = 567
     Width = 914
     Height = 19
     Panels = <
@@ -212,41 +212,108 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       item
         Width = 50
       end>
+    ExplicitTop = 550
   end
-  object pnlLeftSide: TStackPanel
+  object pnlPackage: TPanel
+    Left = 185
+    Top = 89
+    Width = 729
+    Height = 478
+    Align = alClient
+    TabOrder = 2
+    ExplicitHeight = 461
+    object lbPackages: TCheckListBox
+      Left = 1
+      Top = 1
+      Width = 727
+      Height = 80
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ItemHeight = 15
+      ParentFont = False
+      PopupMenu = mnuCheckListPopup
+      TabOrder = 0
+      OnClick = lbPackagesClick
+    end
+    object lstPackages: TControlList
+      Left = 1
+      Top = 81
+      Width = 727
+      Height = 396
+      Align = alClient
+      ItemCount = 10
+      ItemHeight = 90
+      ItemIndex = 0
+      ItemMargins.Left = 0
+      ItemMargins.Top = 0
+      ItemMargins.Right = 0
+      ItemMargins.Bottom = 0
+      ParentColor = False
+      TabOrder = 1
+      ExplicitHeight = 379
+      object lblPkgName: TLabel
+        Left = 3
+        Top = 4
+        Width = 502
+        Height = 19
+        AutoSize = False
+        Caption = '1.8-JDK8'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 0
+        Top = 35
+        Width = 706
+        Height = 55
+        Align = alBottom
+        AutoSize = False
+        Caption = 'Java SE Development Kit 8'
+        WordWrap = True
+        ExplicitLeft = 3
+        ExplicitTop = 29
+        ExplicitWidth = 502
+      end
+    end
+  end
+  object pnlCategoriesPkgs: TPanel
     Left = 0
     Top = 89
-    Width = 177
-    Height = 461
+    Width = 185
+    Height = 478
     Align = alLeft
-    ControlCollection = <
-      item
-        Control = Label3
-        HorizontalPositioning = sphpFill
-        VerticalPositioning = spvpTop
-      end
-      item
-        Control = lbCategories
-        HorizontalPositioning = sphpFill
-        VerticalPositioning = spvpTop
-      end
-      item
-        Control = lblNumElements
-      end>
-    TabOrder = 2
-    ExplicitTop = 92
+    TabOrder = 3
+    ExplicitHeight = 461
     object Label3: TLabel
       Left = 1
       Top = 1
-      Width = 175
+      Width = 183
       Height = 16
       Align = alTop
       Caption = 'Categories'
+      ExplicitWidth = 61
+    end
+    object lblNumElements: TLabel
+      Left = 1
+      Top = 279
+      Width = 183
+      Height = 16
+      Align = alTop
+      Caption = 'Total Packages: 3807'
+      ExplicitWidth = 123
     end
     object lbCategories: TListBox
       Left = 1
-      Top = 19
-      Width = 175
+      Top = 17
+      Width = 183
       Height = 262
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -256,91 +323,144 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Font.Style = []
       ItemHeight = 18
       Items.Strings = (
-        'Category One')
+        'All'
+        'Libraries'
+        'Components'
+        'Internet Of Things'
+        'Platforms'
+        'Trial'
+        'Industry Templates'
+        'IDE Plugins'
+        'Styles'
+        'C++ Libraries'
+        'Tools'
+        'Sample Projects'
+        'Promoted'
+        'Patches and Hotfixes')
       ParentFont = False
       TabOrder = 0
     end
-    object lblNumElements: TLabel
+    object pnlPkgInfo: TPanel
       Left = 1
-      Top = 283
-      Width = 76
-      Height = 16
-      Caption = 'Packages: 13'
-    end
-  end
-  object pnlPackage: TPanel
-    Left = 177
-    Top = 89
-    Width = 737
-    Height = 461
-    Align = alClient
-    TabOrder = 3
-    ExplicitLeft = 464
-    ExplicitTop = 370
-    ExplicitWidth = 498
-    ExplicitHeight = 41
-    object lbPackages: TCheckListBox
-      Left = 1
-      Top = 1
-      Width = 735
-      Height = 208
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Consolas'
-      Font.Style = []
-      ItemHeight = 15
-      Items.Strings = (
-        'one'
-        'two'
-        'three')
-      ParentFont = False
-      PopupMenu = mnuCheckListPopup
-      TabOrder = 0
-      OnClick = lbPackagesClick
-      ExplicitLeft = 0
-      ExplicitTop = 124
-      ExplicitWidth = 737
-    end
-    object lstPackages: TControlList
-      Left = 1
-      Top = 209
-      Width = 735
-      Height = 251
+      Top = 295
+      Width = 183
+      Height = 182
+      Margins.Top = 5
       Align = alClient
-      ItemCount = 4
-      ItemHeight = 90
-      ItemIndex = 0
-      ItemMargins.Left = 0
-      ItemMargins.Top = 0
-      ItemMargins.Right = 0
-      ItemMargins.Bottom = 0
-      ParentColor = False
+      BevelEdges = [beTop, beBottom]
+      BevelInner = bvLowered
+      BevelOuter = bvNone
       TabOrder = 1
-      object lblPkgName: TLabel
-        Left = 3
-        Top = 4
-        Width = 178
-        Height = 19
-        Caption = 'LockBox VCL and FMX'
+      ExplicitLeft = -3
+      ExplicitTop = 290
+      ExplicitHeight = 165
+      object Label4: TLabel
+        Left = 1
+        Top = 1
+        Width = 181
+        Height = 16
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Package Information'
+        Color = clWindowText
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -16
+        Font.Color = clBtnFace
+        Font.Height = -13
         Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
+        Font.Style = []
+        ParentColor = False
         ParentFont = False
+        Transparent = False
+        ExplicitWidth = 117
       end
-      object Label5: TLabel
-        Left = 3
-        Top = 26
-        Width = 502
-        Height = 55
-        AutoSize = False
-        Caption = 
-          'LockBox is a Delphi and C++Builder library for cryptography.'#13#10#13#10 +
-          'Supported on platforms: Win32, Win64, Android, OS X.'
+      object lblVendor: TRzURLLabel
+        Left = 1
+        Top = 17
+        Width = 181
+        Height = 13
+        Align = alTop
+        Caption = 'Embarcadero Technologies'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsUnderline]
+        ParentFont = False
+        URL = 'http://www.embarcadero.com'
+        ExplicitWidth = 128
+      end
+      object lblPkgSize: TLabel
+        Left = 1
+        Top = 30
+        Width = 181
+        Height = 16
+        Align = alTop
+        Caption = 'Size: 367.599'
+        ExplicitWidth = 79
+      end
+      object lblPkgType: TLabel
+        Left = 1
+        Top = 46
+        Width = 181
+        Height = 16
+        Align = alTop
+        Caption = 'Type: Library'
+        ExplicitWidth = 76
+      end
+      object lblPkgTags: TLabel
+        Left = 1
+        Top = 165
+        Width = 181
+        Height = 16
+        Align = alBottom
+        Caption = 'Tags: '
         WordWrap = True
+        ExplicitTop = 148
+        ExplicitWidth = 37
+      end
+      object lblLicense: TRzURLLabel
+        Left = 1
+        Top = 62
+        Width = 181
+        Height = 13
+        Align = alTop
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsUnderline]
+        ParentFont = False
+        URL = 
+          'http://altd.embarcadero.com/getit/public/licenses/jdk8-license.t' +
+          'xt'
+        ExplicitWidth = 3
+      end
+      object lblModified: TLabel
+        Left = 1
+        Top = 75
+        Width = 181
+        Height = 16
+        Align = alTop
+        Caption = 'Last Modified: 2019-12-09 07:47:40'
+        ExplicitWidth = 206
+      end
+      object lblPlatforms: TLabel
+        Left = 1
+        Top = 91
+        Width = 181
+        Height = 16
+        Align = alTop
+        Caption = '[{"Id":"1","Name":"x86"}]'
+        ExplicitWidth = 147
+      end
+      object lblOSs: TLabel
+        Left = 1
+        Top = 107
+        Width = 181
+        Height = 16
+        Align = alTop
+        Caption = '[{"Id":"1","Name":"Windows"}]'
+        ExplicitWidth = 179
       end
     end
   end
@@ -404,8 +524,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     MaxTimeAfterLastOutput = 30
     OnNewLine = DosCommandNewLine
     OnTerminated = DosCommandTerminated
-    Left = 129
-    Top = 385
+    Left = 329
+    Top = 265
   end
   object mnuCheckListPopup: TPopupMenu
     Left = 336
@@ -497,8 +617,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
-    Left = 236
-    Top = 461
+    Left = 340
+    Top = 501
     object LinkListControlToField1: TLinkListControlToField
       Category = 'Quick Bindings'
       DataSource = BindSourceDBCategories
@@ -512,7 +632,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       DataSource = BindSourceDBCategories
       FieldName = 'NumElements'
       Component = lblNumElements
-      CustomFormat = #39'Packages: '#39' + %s'
+      CustomFormat = #39'Total Packages: '#39' + %s'
       ComponentProperty = 'Caption'
     end
     object LinkPropertyToFieldName: TLinkPropertyToField
@@ -531,6 +651,80 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       DataSource = BindSourceDBCatalogInfo
       GridControl = lstPackages
       Columns = <>
+    end
+    object LinkPropertyToFieldVendor: TLinkPropertyToField
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'Vendor'
+      Component = lblVendor
+      CustomFormat = '%s'
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldURL: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'VendorUrl'
+      Component = lblVendor
+      ComponentProperty = 'URL'
+    end
+    object LinkPropertyToFieldCaption: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'LibSize'
+      Component = lblPkgSize
+      CustomFormat = #39'Size: '#39' + %s'
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldCaption2: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'TypeDescription'
+      Component = lblPkgType
+      CustomFormat = #39'Type: '#39' + %s'
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldCaption3: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'Tags'
+      Component = lblPkgTags
+      CustomFormat = #39'Tags: '#39' + %s'
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldCaption4: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'LibLicenseName'
+      Component = lblLicense
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldURL2: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'LibLicense'
+      Component = lblLicense
+      ComponentProperty = 'URL'
+    end
+    object LinkPropertyToFieldCaption5: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'Modified'
+      Component = lblModified
+      CustomFormat = #39'Last Modified: '#39' + %s'
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldCaption6: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'LibPlatforms'
+      Component = lblPlatforms
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldCaption7: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'LibOSes'
+      Component = lblOSs
+      ComponentProperty = 'Caption'
     end
   end
   object BindSourceDBCatalogInfo: TBindSourceDB
