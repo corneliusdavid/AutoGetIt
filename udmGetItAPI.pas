@@ -60,6 +60,14 @@ type
     tblCategoriesId: TWideStringField;
     tblCategoriesName: TWideStringField;
     tblCategoriesNumElements: TWideStringField;
+    RESTRespDSAdapterCatPlatforms: TRESTResponseDataSetAdapter;
+    tblCatalogPlatforms: TFDMemTable;
+    tblCatalogPlatformsId: TWideStringField;
+    tblCatalogPlatformsName: TWideStringField;
+    RESTRespDSAdapterCatOSes: TRESTResponseDataSetAdapter;
+    tblCatalogOSes: TFDMemTable;
+    tblCatalogOSesId: TWideStringField;
+    tblCatalogOSesName: TWideStringField;
     procedure DataModuleCreate(Sender: TObject);
   private
     const
@@ -75,6 +83,8 @@ type
     procedure SetReadTimeout(const Value: Integer);
   public
     procedure GetCatalogInfo(const SearchText: string; const CategoryIDs: string);
+    function PkgPlatformsCSV: string;
+    function PkgOpSystemsCSV: string;
     property BaseURL: string read FBaseURL write SetBaseURL;
     property ConnectTimeout: Integer read FConnectTimeout write SetConnectTimeout;
     property ReadTimeout: Integer read FReadTimeout write SetReadTimeout;
@@ -106,6 +116,34 @@ begin
     RESTReqCatalogInfo.Params.AddItem('Categories', CategoryIDs);
 
   RESTReqCatalogInfo.Execute;
+end;
+
+function TdmGetItAPI.PkgOpSystemsCSV: string;
+begin
+  Result := EmptyStr;
+  if tblCatalogOSes.Active then begin
+    tblCatalogOSes.First;
+    while not tblCatalogOSes.Eof do begin
+      if Result.Length > 0 then
+        Result := Result + ', ';
+      Result := Result + tblCatalogOSesName.AsString;
+      tblCatalogOSes.Next;
+    end;
+  end;
+end;
+
+function TdmGetItAPI.PkgPlatformsCSV: string;
+begin
+  Result := EmptyStr;
+  if tblCatalogPlatforms.Active then begin
+    tblCatalogPlatforms.First;
+    while not tblCatalogPlatforms.Eof do begin
+      if Result.Length > 0 then
+        Result := Result + ', ';
+      Result := Result + tblCatalogPlatformsName.AsString;
+      tblCatalogPlatforms.Next;
+    end;
+  end;
 end;
 
 procedure TdmGetItAPI.SetBaseURL(const Value: string);

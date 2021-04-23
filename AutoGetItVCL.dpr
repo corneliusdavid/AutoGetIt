@@ -13,7 +13,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Obsidian');
   Application.CreateForm(TfrmAutoGetItMain, frmAutoGetItMain);
   Application.CreateForm(TfrmInstallLog, frmInstallLog);
   Application.CreateForm(TdmGetItAPI, dmGetItAPI);

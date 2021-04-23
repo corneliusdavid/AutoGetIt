@@ -155,8 +155,9 @@ Coordinates=550,10,142,33
 Visible=False
 
 []
-Coordinates=130,1,70,33
-Visible=False
+Coordinates=740,540,73,51
+Visible=True
+LayerNames=catalog
 
 [BindingsList1]
 Coordinates=113,134,82,33
@@ -240,13 +241,50 @@ EditingLayerName=catalog
 [lblModified]
 Coordinates=730,370,68,51
 LayerNames=catalog
+Visible=True
 
-[lblPlatforms]
-Coordinates=740,540,73,51
+[dmGetItAPI.tblCatalogOSes]
+Coordinates=203,783,149,87
+
+[lbCatCategories]
+Coordinates=758,670,93,105
+
+[Label8]
+Coordinates=440,521,46,51
+
+[Label7]
+Coordinates=489,521,46,51
+
+[lbCatOSes]
+Coordinates=739,783,84,105
+
+[pnlBottomInfo]
+Coordinates=758,440,84,51
+
+[dmGetItAPI.tblCatalogPlatforms]
+Coordinates=362,783,171,33
+Visible=False
+
+[lbCatPlatforms]
+Coordinates=331,378,87,105
+
+[BindSourceDBCatPlatforms]
+Coordinates=362,783,152,105
+
+[lblPkgCategories]
+Coordinates=133,1,98,51
+
+[lblPkgOSes]
+Coordinates=740,600,71,51
 Visible=True
 LayerNames=catalog
 
-[lblOSs]
-Coordinates=750,590,46,51
+[lblPkgPlatforms]
+Coordinates=720,530,92,51
+Visible=True
+LayerNames=catalog
+
+[lblVersion]
+Coordinates=450,70,64,51
 LayerNames=catalog
 

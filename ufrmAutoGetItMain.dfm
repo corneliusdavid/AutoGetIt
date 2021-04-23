@@ -212,7 +212,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       item
         Width = 50
       end>
-    ExplicitTop = 550
   end
   object pnlPackage: TPanel
     Left = 185
@@ -221,7 +220,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Height = 478
     Align = alClient
     TabOrder = 2
-    ExplicitHeight = 461
     object lbPackages: TCheckListBox
       Left = 1
       Top = 1
@@ -246,7 +244,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Height = 396
       Align = alClient
       ItemCount = 10
-      ItemHeight = 90
+      ItemHeight = 110
       ItemIndex = 0
       ItemMargins.Left = 0
       ItemMargins.Top = 0
@@ -254,7 +252,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       ItemMargins.Bottom = 0
       ParentColor = False
       TabOrder = 1
-      ExplicitHeight = 379
+      ExplicitLeft = 4
+      ExplicitTop = 76
       object lblPkgName: TLabel
         Left = 3
         Top = 4
@@ -270,17 +269,27 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 0
-        Top = 35
+        Left = 2
+        Top = 29
         Width = 706
         Height = 55
-        Align = alBottom
         AutoSize = False
         Caption = 'Java SE Development Kit 8'
         WordWrap = True
-        ExplicitLeft = 3
-        ExplicitTop = 29
-        ExplicitWidth = 502
+      end
+      object lblPkgPlatforms: TLabel
+        Left = 338
+        Top = 90
+        Width = 83
+        Height = 16
+        Caption = 'Platforms: x86'
+      end
+      object lblPkgOSes: TLabel
+        Left = 3
+        Top = 90
+        Width = 169
+        Height = 16
+        Caption = 'Operating Systems: Windows'
       end
     end
   end
@@ -291,7 +300,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Height = 478
     Align = alLeft
     TabOrder = 3
-    ExplicitHeight = 461
     object Label3: TLabel
       Left = 1
       Top = 1
@@ -308,7 +316,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Height = 16
       Align = alTop
       Caption = 'Total Packages: 3807'
-      ExplicitWidth = 123
+      ExplicitLeft = -3
+      ExplicitTop = 274
     end
     object lbCategories: TListBox
       Left = 1
@@ -339,6 +348,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         'Patches and Hotfixes')
       ParentFont = False
       TabOrder = 0
+      ExplicitTop = 11
     end
     object pnlPkgInfo: TPanel
       Left = 1
@@ -353,7 +363,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 1
       ExplicitLeft = -3
       ExplicitTop = 290
-      ExplicitHeight = 165
       object Label4: TLabel
         Left = 1
         Top = 1
@@ -375,7 +384,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       end
       object lblVendor: TRzURLLabel
         Left = 1
-        Top = 17
+        Top = 33
         Width = 181
         Height = 13
         Align = alTop
@@ -387,24 +396,27 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Font.Style = [fsUnderline]
         ParentFont = False
         URL = 'http://www.embarcadero.com'
+        ExplicitTop = 17
         ExplicitWidth = 128
       end
       object lblPkgSize: TLabel
-        Left = 1
-        Top = 30
-        Width = 181
-        Height = 16
-        Align = alTop
-        Caption = 'Size: 367.599'
-        ExplicitWidth = 79
-      end
-      object lblPkgType: TLabel
         Left = 1
         Top = 46
         Width = 181
         Height = 16
         Align = alTop
+        Caption = 'Size: 367.599'
+        ExplicitTop = 30
+        ExplicitWidth = 79
+      end
+      object lblPkgType: TLabel
+        Left = 1
+        Top = 62
+        Width = 181
+        Height = 16
+        Align = alTop
         Caption = 'Type: Library'
+        ExplicitTop = 46
         ExplicitWidth = 76
       end
       object lblPkgTags: TLabel
@@ -415,12 +427,11 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Align = alBottom
         Caption = 'Tags: '
         WordWrap = True
-        ExplicitTop = 148
         ExplicitWidth = 37
       end
       object lblLicense: TRzURLLabel
         Left = 1
-        Top = 62
+        Top = 78
         Width = 181
         Height = 13
         Align = alTop
@@ -433,34 +444,26 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         URL = 
           'http://altd.embarcadero.com/getit/public/licenses/jdk8-license.t' +
           'xt'
-        ExplicitWidth = 3
+        ExplicitLeft = -2
+        ExplicitTop = 84
       end
       object lblModified: TLabel
-        Left = 1
-        Top = 75
-        Width = 181
-        Height = 16
-        Align = alTop
-        Caption = 'Last Modified: 2019-12-09 07:47:40'
-        ExplicitWidth = 206
-      end
-      object lblPlatforms: TLabel
         Left = 1
         Top = 91
         Width = 181
         Height = 16
         Align = alTop
-        Caption = '[{"Id":"1","Name":"x86"}]'
-        ExplicitWidth = 147
+        ExplicitWidth = 4
       end
-      object lblOSs: TLabel
+      object lblVersion: TLabel
         Left = 1
-        Top = 107
+        Top = 17
         Width = 181
         Height = 16
         Align = alTop
-        Caption = '[{"Id":"1","Name":"Windows"}]'
-        ExplicitWidth = 179
+        Caption = 'Version: 18.0.25048.9432'
+        ExplicitLeft = 2
+        ExplicitTop = 8
       end
     end
   end
@@ -709,21 +712,31 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       DataSource = BindSourceDBCatalogInfo
       FieldName = 'Modified'
       Component = lblModified
-      CustomFormat = #39'Last Modified: '#39' + %s'
+      CustomFormat = #39'Last Modified: '#39' + FormatDateTime('#39'yyyy-mm-dd'#39', %s)'
       ComponentProperty = 'Caption'
     end
     object LinkPropertyToFieldCaption6: TLinkPropertyToField
       Category = 'Quick Bindings'
       DataSource = BindSourceDBCatalogInfo
       FieldName = 'LibPlatforms'
-      Component = lblPlatforms
+      Component = lblPkgPlatforms
+      CustomFormat = #39'Platforms: '#39' + JsonArrayToCSV(%s, '#39'Name'#39')'
       ComponentProperty = 'Caption'
     end
     object LinkPropertyToFieldCaption7: TLinkPropertyToField
       Category = 'Quick Bindings'
       DataSource = BindSourceDBCatalogInfo
       FieldName = 'LibOSes'
-      Component = lblOSs
+      Component = lblPkgOSes
+      CustomFormat = #39'Operating Systems: '#39' + JsonArrayToCSV(%s, '#39'Name'#39')'
+      ComponentProperty = 'Caption'
+    end
+    object LinkPropertyToFieldCaption8: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDBCatalogInfo
+      FieldName = 'Version'
+      Component = lblVersion
+      CustomFormat = #39'Version: '#39' + %s'
       ComponentProperty = 'Caption'
     end
   end

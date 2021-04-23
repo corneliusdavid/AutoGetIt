@@ -9,7 +9,8 @@ uses
   DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.WinXPanels,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
   Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, Vcl.Bind.Grid,
-  Data.Bind.Grid, Vcl.Grids, Vcl.ControlList, Vcl.Bind.ControlList, RzLabel;
+  Data.Bind.Grid, Vcl.Grids, Vcl.ControlList, Vcl.Bind.ControlList, RzLabel,
+  Beyond.Bind.Json, Beyond.Bind.StrUtils;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -82,10 +83,12 @@ type
     pnlCategoriesPkgs: TPanel;
     lblModified: TLabel;
     LinkPropertyToFieldCaption5: TLinkPropertyToField;
-    lblPlatforms: TLabel;
+    lblPkgPlatforms: TLabel;
+    lblPkgOSes: TLabel;
     LinkPropertyToFieldCaption6: TLinkPropertyToField;
-    lblOSs: TLabel;
     LinkPropertyToFieldCaption7: TLinkPropertyToField;
+    lblVersion: TLabel;
+    LinkPropertyToFieldCaption8: TLinkPropertyToField;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
