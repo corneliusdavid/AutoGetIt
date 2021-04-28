@@ -252,8 +252,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       ItemMargins.Bottom = 0
       ParentColor = False
       TabOrder = 1
-      ExplicitLeft = 4
-      ExplicitTop = 76
       object lblPkgName: TLabel
         Left = 3
         Top = 4
@@ -316,8 +314,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       Height = 16
       Align = alTop
       Caption = 'Total Packages: 3807'
-      ExplicitLeft = -3
-      ExplicitTop = 274
+      ExplicitWidth = 123
     end
     object lbCategories: TListBox
       Left = 1
@@ -348,7 +345,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         'Patches and Hotfixes')
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 11
     end
     object pnlPkgInfo: TPanel
       Left = 1
@@ -361,8 +357,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       BevelInner = bvLowered
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = -3
-      ExplicitTop = 290
       object Label4: TLabel
         Left = 1
         Top = 1
@@ -396,7 +390,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Font.Style = [fsUnderline]
         ParentFont = False
         URL = 'http://www.embarcadero.com'
-        ExplicitTop = 17
         ExplicitWidth = 128
       end
       object lblPkgSize: TLabel
@@ -406,7 +399,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Height = 16
         Align = alTop
         Caption = 'Size: 367.599'
-        ExplicitTop = 30
         ExplicitWidth = 79
       end
       object lblPkgType: TLabel
@@ -416,7 +408,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Height = 16
         Align = alTop
         Caption = 'Type: Library'
-        ExplicitTop = 46
         ExplicitWidth = 76
       end
       object lblPkgTags: TLabel
@@ -444,8 +435,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         URL = 
           'http://altd.embarcadero.com/getit/public/licenses/jdk8-license.t' +
           'xt'
-        ExplicitLeft = -2
-        ExplicitTop = 84
+        ExplicitWidth = 3
       end
       object lblModified: TLabel
         Left = 1
@@ -453,7 +443,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Width = 181
         Height = 16
         Align = alTop
-        ExplicitWidth = 4
+        Caption = 'Modified: 2019-12-09'
+        ExplicitWidth = 123
       end
       object lblVersion: TLabel
         Left = 1
@@ -462,8 +453,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Height = 16
         Align = alTop
         Caption = 'Version: 18.0.25048.9432'
-        ExplicitLeft = 2
-        ExplicitTop = 8
+        ExplicitWidth = 148
       end
     end
   end
@@ -712,7 +702,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       DataSource = BindSourceDBCatalogInfo
       FieldName = 'Modified'
       Component = lblModified
-      CustomFormat = #39'Last Modified: '#39' + FormatDateTime('#39'yyyy-mm-dd'#39', %s)'
+      CustomFormat = #39'Modified: '#39' + SubString(%s, 0, 10)'
       ComponentProperty = 'Caption'
     end
     object LinkPropertyToFieldCaption6: TLinkPropertyToField
