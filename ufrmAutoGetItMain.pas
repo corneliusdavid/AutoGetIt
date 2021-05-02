@@ -145,37 +145,57 @@ end;
 
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
-  ProcessCheckedPackages(function (const GetItName: string): string
-      begin
-        Result := GetItInstallCmd(GetItName);
-      end);
+  actInstallChecked.Enabled := False;
+  try
+    ProcessCheckedPackages(function (const GetItName: string): string
+        begin
+          Result := GetItInstallCmd(GetItName);
+        end);
+  finally
+    actInstallChecked.Enabled := True;
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actUninstallCheckedExecute(Sender: TObject);
 begin
-  ProcessCheckedPackages(function (const GetItName: string): string
-      begin
-        Result := GetItUninstallCmd(GetItName);
-      end);
+  actUninstallChecked.Enabled := False;
+  try
+    ProcessCheckedPackages(function (const GetItName: string): string
+        begin
+          Result := GetItUninstallCmd(GetItName);
+        end);
+  finally
+    actUninstallChecked.Enabled := False;
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actInstallOneExecute(Sender: TObject);
 begin
-  frmInstallLog.Initialize;
-  frmInstallLog.ProcessGetItPackage(BDSBinDir,
-             GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
-             1, 1, FInstallAborted);
+  actInstallOne.Enabled := False;
+  try
+    frmInstallLog.Initialize;
+    frmInstallLog.ProcessGetItPackage(BDSBinDir,
+               GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+               1, 1, FInstallAborted);
 
-  frmInstallLog.NotifyFinished;
+    frmInstallLog.NotifyFinished;
+  finally
+    actInstallOne.Enabled := False;
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actUninstallOneExecute(Sender: TObject);
 begin
-  frmInstallLog.Initialize;
-  frmInstallLog.ProcessGetItPackage(BDSBinDir,
-                     GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
-                     1, 1, FInstallAborted);
-  frmInstallLog.NotifyFinished;
+  actUninstallOne.Enabled := False;
+  try
+    frmInstallLog.Initialize;
+    frmInstallLog.ProcessGetItPackage(BDSBinDir,
+                       GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+                       1, 1, FInstallAborted);
+    frmInstallLog.NotifyFinished;
+  finally
+    actUninstallOne.Enabled := False;
+  end;
 end;
 
 procedure TfrmAutoGetItMain.actRefreshExecute(Sender: TObject);
