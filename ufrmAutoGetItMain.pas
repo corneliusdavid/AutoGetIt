@@ -146,6 +146,7 @@ end;
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
   actInstallChecked.Enabled := False;
+  actRefresh.Enabled := False;
   try
     ProcessCheckedPackages(function (const GetItName: string): string
         begin
@@ -153,25 +154,29 @@ begin
         end);
   finally
     actInstallChecked.Enabled := True;
+    actRefresh.Enabled := True;
   end;
 end;
 
 procedure TfrmAutoGetItMain.actUninstallCheckedExecute(Sender: TObject);
 begin
   actUninstallChecked.Enabled := False;
+  actRefresh.Enabled := False;
   try
     ProcessCheckedPackages(function (const GetItName: string): string
         begin
           Result := GetItUninstallCmd(GetItName);
         end);
   finally
-    actUninstallChecked.Enabled := False;
+    actUninstallChecked.Enabled := True;
+    actRefresh.Enabled := True;
   end;
 end;
 
 procedure TfrmAutoGetItMain.actInstallOneExecute(Sender: TObject);
 begin
   actInstallOne.Enabled := False;
+  actRefresh.Enabled := False;
   try
     frmInstallLog.Initialize;
     frmInstallLog.ProcessGetItPackage(BDSBinDir,
@@ -180,13 +185,15 @@ begin
 
     frmInstallLog.NotifyFinished;
   finally
-    actInstallOne.Enabled := False;
+    actInstallOne.Enabled := True;
+    actRefresh.Enabled := True;
   end;
 end;
 
 procedure TfrmAutoGetItMain.actUninstallOneExecute(Sender: TObject);
 begin
   actUninstallOne.Enabled := False;
+  actRefresh.Enabled := False;
   try
     frmInstallLog.Initialize;
     frmInstallLog.ProcessGetItPackage(BDSBinDir,
@@ -194,7 +201,8 @@ begin
                        1, 1, FInstallAborted);
     frmInstallLog.NotifyFinished;
   finally
-    actUninstallOne.Enabled := False;
+    actUninstallOne.Enabled := True;
+    actRefresh.Enabled := True;
   end;
 end;
 
