@@ -5,7 +5,9 @@ uses
   ufrmAutoGetItMain in 'ufrmAutoGetItMain.pas' {frmAutoGetItMain},
   Vcl.Themes,
   Vcl.Styles,
-  ufrmInstallLog in 'ufrmInstallLog.pas' {frmInstallLog};
+  ufrmInstallLog in 'ufrmInstallLog.pas' {frmInstallLog},
+  RegexProxy in 'RegexProxy.pas',
+  UEnvVars in 'UEnvVars.pas';
 
 {$R *.res}
 

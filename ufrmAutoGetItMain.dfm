@@ -27,14 +27,13 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       914
       89)
     object Label1: TLabel
-      Left = 594
+      Left = 501
       Top = 22
-      Width = 116
+      Width = 163
       Height = 16
       Alignment = taRightJustify
       Anchors = [akTop, akRight]
-      Caption = 'RAD Studio Version:'
-      ExplicitLeft = 550
+      Caption = 'BDS | RAD Studio Version:'
     end
     object Label2: TLabel
       Left = 495
@@ -87,9 +86,9 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       TabOrder = 0
     end
     object cmbRADVersions: TComboBox
-      Left = 716
+      Left = 670
       Top = 19
-      Width = 186
+      Width = 232
       Height = 24
       Style = csDropDownList
       Anchors = [akTop, akRight]
@@ -214,6 +213,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       'three')
     ParentFont = False
     PopupMenu = mnuCheckListPopup
+    ScrollWidth = 2400
     TabOrder = 1
     OnClick = lbPackagesClick
   end
@@ -230,8 +230,13 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         Width = 100
       end
       item
+        Width = 450
+      end
+      item
+        Alignment = taRightJustify
         Width = 50
       end>
+    OnDblClick = StatusBarDblClick
   end
   object aclAutoGetit: TActionList
     Left = 216
