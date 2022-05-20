@@ -78,6 +78,7 @@ type
     procedure ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
+    function SwitchFlavor(const DelphiVersionStr: string): Integer;
     function GetItInstallCmd(const GetItPackageName: string): string;
     function GetItUninstallCmd(const GetItPackageName: string): string;
     function ParseGetItName(const GetItLine: string): string;
@@ -101,7 +102,7 @@ uses
   ufrmInstallLog;
 
 const
-  GETIT_VR_NOT_SUPPORTED_MSG = 'This version of Delphi''s GetItCmd.exe is not supported.';
+  GETIT_VR_NOT_SUPPORTED_MSG = 'GetItCmd not supported for this version of Delphi';
 
 procedure TfrmAutoGetItMain.FormCreate(Sender: TObject);
 begin
@@ -109,24 +110,42 @@ begin
   lbPackages.Items.Clear;
 end;
 
+function TfrmAutoGetItMain.SwitchFlavor(const DelphiVersionStr: string): Integer;
+{ inspired by GitHub user toxinon12345 }
+var
+  DVer: string;
+begin
+  DVer := LeftStr(DelphiVersionStr, 4);
+  if DVer = '19.0' then
+    Result := 1   // BDS 19 | Delphi 10.2 Tokyo
+  else if DVer = '20.0' then
+    Result := 1   // BDS 20 | Delphi 10.3 Rio
+  else if DVer = '21.0' then
+    Result := 2   // BDS 21 | Delphi 10.4 Sydney
+  else if DVer = '22.0' then
+    Result := 2   // BDS 22 | Delphi 11.0 Alexandria
+  else
+    Result := -1; // unsupported Delphi version
+end;
+
 function TfrmAutoGetItMain.GetItInstallCmd(const GetItPackageName: string): string;
 begin
-  if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
-    Result := Format('-accept_eulas -i"%s"', [GetItPackageName])
-  else if StartsText('21', cmbRADVersions.Text) then
-    Result := Format('-ae -i="%s"', [GetItPackageName])
+  case SwitchFlavor(cmbRADVersions.Text) of
+    1: Result := Format('-accept_eulas -i"%s"', [GetItPackageName]);
+    2: Result := Format('-ae -i="%s"', [GetItPackageName]);
   else
     raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
+  end;
 end;
 
 function TfrmAutoGetItMain.GetItUninstallCmd(const GetItPackageName: string): string;
 begin
-  if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
-    Result := Format('-u"%s"', [GetItPackageName])
-  else if StartsText('21', cmbRADVersions.Text) then
-    Result := Format('-u="%s"', [GetItPackageName])
+  case SwitchFlavor(cmbRADVersions.Text) of
+    1: Result := Format('-u"%s"', [GetItPackageName]);
+    2: Result := Format('-u="%s"', [GetItPackageName]);
   else
     raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
+  end
 end;
 
 procedure TfrmAutoGetItMain.lbPackagesClick(Sender: TObject);
@@ -225,15 +244,15 @@ begin
 
     DosCommand.CurrentDir := BDSBinDir;
 
-    if StartsText('19', cmbRADVersions.Text) or StartsText('20', cmbRADVersions.Text) then
-      CmdLineArgs := Format('-listavailable:%s -sort:%s -filter:%s ', [edtNameFilter.Text, SortField,
-                          IfThen(chkInstalledOnly.Checked, 'Installed', 'All')])
-    else if StartsText('21', cmbRADVersions.Text) then
-      CmdLineArgs := Format('--list=%s --sort=%s --filter=%s', [
+    case SwitchFlavor(cmbRADVersions.Text) of
+      1: CmdLineArgs := Format('-listavailable:%s -sort:%s -filter:%s ', [edtNameFilter.Text, SortField,
+                          IfThen(chkInstalledOnly.Checked, 'Installed', 'All')]);
+      2: CmdLineArgs := Format('--list=%s --sort=%s --filter=%s', [
                           edtNameFilter.Text, SortField,
-                          IfThen(chkInstalledOnly.Checked, 'installed', 'all')])
+                          IfThen(chkInstalledOnly.Checked, 'installed', 'all')]);
     else
       raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
+    end;
 
     DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
     ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
@@ -391,9 +410,9 @@ end;
 
 procedure TfrmAutoGetItMain.LoadRADVersionsCombo;
 const
-  MAX_VERSIONS = 3;
-  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0');
-  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney');
+  MAX_VERSIONS = 4;
+  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0', '22.0');
+  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney', '11 Alexandria');
 begin
   cmbRADVersions.Items.Clear;
 
