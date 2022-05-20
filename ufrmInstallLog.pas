@@ -93,7 +93,9 @@ begin
   pbInstalls.Update;
 
   DosCmdGetItInstall.CurrentDir := StartDir;
-  DosCmdGetItInstall.CommandLine := TPath.Combine(StartDir, 'GetItCmd.exe ') + GetItCmdArgs;
+
+  // set up selected Delphi's environment paths--thanks GitHub user toxinon12345!
+  DosCmdGetItInstall.CommandLine := 'rsvars.bat && GetItCmd.exe ' + GetItCmdArgs;
 
   AddLog('Command Line: ' + DosCmdGetItInstall.CommandLine);
 
