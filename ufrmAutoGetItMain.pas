@@ -398,9 +398,10 @@ begin
       FPastFirstItem := True;
   end else if ContainsText(ANewLine, 'command finished') then
     FFinished := True
-  else if not FFinished and (Trim(ANewLine).Length > 0) then
+  else if not FFinished and (Trim(ANewLine).Length > 0) and ANewLine.Contains('  ') then begin
     if lbPackages.Items.IndexOf(ANewLine) = -1 then
       lbPackages.Items.Add(ANewLine);
+  end;
 end;
 
 procedure TfrmAutoGetItMain.DosCommandTerminated(Sender: TObject);
