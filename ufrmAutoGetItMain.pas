@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus;
+  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.Mask, Data.Bind.EngExt, Vcl.Bind.DBEngExt, Data.Bind.Components;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -47,6 +47,11 @@ type
     actUninstallOne: TAction;
     Uninstallhighlightedpackage1: TMenuItem;
     Label2: TLabel;
+    mmoDescription: TMemo;
+    BindingsList1: TBindingsList;
+    Splitter1: TSplitter;
+    pnlListOpts: TPanel;
+    pnlInstall: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);
@@ -69,6 +74,7 @@ type
     var
       FPastFirstItem: Boolean;
       FFinished: Boolean;
+      FPackageNewLine: string;
       FInstallAborted: Boolean;
     procedure SetExecLine(const Value: string);
     procedure SetDownloadTime(const Value: Integer);
@@ -152,6 +158,8 @@ procedure TfrmAutoGetItMain.lbPackagesClick(Sender: TObject);
 begin
   actInstallOne.Enabled := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
   actUninstallOne.Enabled := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
+
+  mmoDescription.Text := lbPackages.Items[lbPackages.ItemIndex];
 
   if actInstallOne.Enabled then begin
     actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
@@ -396,11 +404,22 @@ begin
   if not FPastFirstItem then begin
     if StartsText('--', ANewLine) then
       FPastFirstItem := True;
-  end else if ContainsText(ANewLine, 'command finished') then
-    FFinished := True
-  else if not FFinished and (Trim(ANewLine).Length > 0) and ANewLine.Contains('  ') then begin
-    if lbPackages.Items.IndexOf(ANewLine) = -1 then
-      lbPackages.Items.Add(ANewLine);
+  end else if ContainsText(ANewLine, 'command finished') then begin
+    FFinished := True;
+    // write out the last package
+    if lbPackages.Items.IndexOf(FPackageNewLine) = -1 then
+      lbPackages.Items.Add(FPackageNewLine);
+  end else if not FFinished and (Trim(ANewLine).Length > 0) then begin
+    if ANewLine.Contains('  ') then begin
+      // if this is a new line, write out whatever was in the buffer for the previous package
+      if (not FPackageNewLine.IsEmpty) and (lbPackages.Items.IndexOf(FPackageNewLine) = -1) then
+        lbPackages.Items.Add(FPackageNewLine);
+
+      // start a new package line
+      FPackageNewLine := ANewLine;
+    end else
+      // add to the previous package line
+      FPackageNewLine := FPackageNewLine + ANewLine
   end;
 end;
 
