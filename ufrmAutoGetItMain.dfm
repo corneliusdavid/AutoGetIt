@@ -7,6 +7,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   Color = clBtnFace
   Constraints.MinHeight = 600
   Constraints.MinWidth = 1850
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -26
@@ -26,8 +27,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Margins.Right = 6
     Margins.Bottom = 6
     Align = alBottom
-    ExplicitTop = 1002
-    ExplicitWidth = 1828
   end
   object pnlTop: TPanel
     Left = 0
@@ -40,7 +39,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Margins.Bottom = 6
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 1816
     object pnlListOpts: TPanel
       Left = 1
       Top = 1
@@ -289,7 +287,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Font.Height = -26
     Font.Name = 'Consolas'
     Font.Style = []
-    ItemHeight = 32
+    ItemHeight = 31
     Items.Strings = (
       'one'
       'two'
@@ -298,10 +296,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     PopupMenu = mnuCheckListPopup
     TabOrder = 1
     OnClick = lbPackagesClick
-    ExplicitLeft = 11
-    ExplicitTop = 370
-    ExplicitWidth = 1816
-    ExplicitHeight = 591
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -322,8 +316,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       item
         Width = 100
       end>
-    ExplicitTop = 1092
-    ExplicitWidth = 1816
   end
   object mmoDescription: TMemo
     Left = 0
@@ -337,7 +329,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Align = alBottom
     ScrollBars = ssVertical
     TabOrder = 3
-    ExplicitWidth = 1828
   end
   object aclAutoGetit: TActionList
     Left = 216

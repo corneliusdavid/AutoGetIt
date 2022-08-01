@@ -2,48 +2,64 @@ object frmInstallLog: TfrmInstallLog
   Left = 0
   Top = 0
   Caption = 'Install/Uninstall Log'
-  ClientHeight = 555
-  ClientWidth = 803
+  ClientHeight = 1110
+  ClientWidth = 1606
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -22
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 192
+  TextHeight = 27
   object lbInstallLog: TListBox
     Left = 0
     Top = 0
-    Width = 803
-    Height = 517
+    Width = 1606
+    Height = 1034
+    Margins.Left = 6
+    Margins.Top = 6
+    Margins.Right = 6
+    Margins.Bottom = 6
     Align = alClient
-    ItemHeight = 13
+    ItemHeight = 27
     TabOrder = 0
   end
   object pnlLogBottom: TPanel
     Left = 0
-    Top = 517
-    Width = 803
-    Height = 38
+    Top = 1034
+    Width = 1606
+    Height = 76
+    Margins.Left = 6
+    Margins.Top = 6
+    Margins.Right = 6
+    Margins.Bottom = 6
     Align = alBottom
     TabOrder = 1
     DesignSize = (
-      803
-      38)
+      1606
+      76)
     object lblCount: TLabel
-      Left = 105
-      Top = 12
-      Width = 76
-      Height = 13
+      Left = 210
+      Top = 24
+      Width = 155
+      Height = 27
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
       Caption = '0 of 2 packages'
     end
     object btnCancel: TBitBtn
-      Left = 10
-      Top = 6
-      Width = 89
-      Height = 28
+      Left = 20
+      Top = 12
+      Width = 178
+      Height = 56
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
       Anchors = [akLeft, akTop, akBottom]
       Kind = bkCancel
       NumGlyphs = 2
@@ -51,18 +67,26 @@ object frmInstallLog: TfrmInstallLog
       OnClick = btnCancelClick
     end
     object pbInstalls: TProgressBar
-      Left = 208
-      Top = 6
-      Width = 569
-      Height = 27
+      Left = 416
+      Top = 12
+      Width = 1138
+      Height = 54
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
       Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 1
     end
     object btnClose: TBitBtn
-      Left = 10
-      Top = 6
-      Width = 89
-      Height = 28
+      Left = 20
+      Top = 12
+      Width = 178
+      Height = 56
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
       Anchors = [akLeft, akTop, akBottom]
       Kind = bkClose
       NumGlyphs = 2
