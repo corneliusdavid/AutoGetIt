@@ -172,6 +172,8 @@ end;
 
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
+  if True then
+
   actInstallChecked.Enabled := False;
   actRefresh.Enabled := False;
   try
@@ -474,22 +476,26 @@ var
 begin
   FInstallAborted := False;
   total := CountChecked;
-  count := 0;
-  frmInstallLog.Initialize;
-  for var i := 0 to lbPackages.Count - 1 do begin
-    if lbPackages.Checked[i] then begin
-      GetItLine := lbPackages.Items[i];
-      GetItName := ParseGetItName(GetItLine);
+  if total = 0 then
+    ShowMessage('There are no packages selected.')
+  else begin
+    count := 0;
+    frmInstallLog.Initialize;
+    for var i := 0 to lbPackages.Count - 1 do begin
+      if lbPackages.Checked[i] then begin
+        GetItLine := lbPackages.Items[i];
+        GetItName := ParseGetItName(GetItLine);
 
-      Inc(count);
-      frmInstallLog.ProcessGetItPackage(BDSBinDir, GetItArgsFunc(GetItName),
-                                        Count, Total, FInstallAborted)
+        Inc(count);
+        frmInstallLog.ProcessGetItPackage(BDSBinDir, GetItArgsFunc(GetItName),
+                                          Count, Total, FInstallAborted)
+      end;
+
+      if FInstallAborted then
+        Break;
     end;
-
-    if FInstallAborted then
-      Break;
+    frmInstallLog.NotifyFinished;
   end;
-  frmInstallLog.NotifyFinished;
 end;
 
 procedure TfrmAutoGetItMain.rgrpSortByClick(Sender: TObject);
