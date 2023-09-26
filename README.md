@@ -7,6 +7,10 @@ This Delphi program uses the DosCommand component (available on GetIt) to shell 
 
 _Originally Written in Delphi 10.4.1, tested on the update to Delphi 10.4.2: installed over 75 packages in less than 30 mintues!_
 
+### Delphi 12 Disclaimer
+
+This commit, released 2023-Sep-25, supports Delphi 12! Please note that as of this date, RAD Studio 12 is _still in Beta_! That means it is based on a pre-release version of the RAD Studio software and it has been written with specific permission by Embarcadero. No feature is committed until the product GA release. That means you agree to use it at your own risk (as with all open-source software) and that things may change in Delphi, the GetIt interface, and this code before Delphi 12 is made generally available.
+
 ## Batch files
 
 If you don't want to run the GUI, I also wrote a bunch of batch files that do the same thing but with pre-selected groups of packages.  I basically dumped all the packages into a text file then prepended the GetIt command line to install them and separated them into variously grouped batch files, some duplicated among a couple of groups. If you haven't already done this for your install, this will help get you started.

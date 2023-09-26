@@ -1,65 +1,54 @@
 object frmAutoGetItMain: TfrmAutoGetItMain
   Left = 0
   Top = 0
+  Margins.Left = 2
+  Margins.Top = 2
+  Margins.Right = 2
+  Margins.Bottom = 2
   Caption = 'Auto GetIt!'
-  ClientHeight = 1138
-  ClientWidth = 1842
+  ClientHeight = 569
+  ClientWidth = 921
   Color = clBtnFace
-  Constraints.MinHeight = 600
-  Constraints.MinWidth = 1850
+  Constraints.MinHeight = 300
+  Constraints.MinWidth = 925
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -26
+  Font.Height = -13
   Font.Name = 'Tahoma'
   Font.Style = []
   OnCreate = FormCreate
-  PixelsPerInch = 192
-  TextHeight = 31
+  TextHeight = 16
   object Splitter1: TSplitter
     Left = 0
-    Top = 1000
-    Width = 1842
-    Height = 8
+    Top = 500
+    Width = 921
+    Height = 4
     Cursor = crVSplit
-    Margins.Left = 6
-    Margins.Top = 6
-    Margins.Right = 6
-    Margins.Bottom = 6
     Align = alBottom
+    MinSize = 15
   end
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 1842
-    Height = 178
-    Margins.Left = 6
-    Margins.Top = 6
-    Margins.Right = 6
-    Margins.Bottom = 6
+    Width = 921
+    Height = 89
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 919
     object pnlListOpts: TPanel
       Left = 1
       Top = 1
-      Width = 1008
-      Height = 176
-      Margins.Left = 6
-      Margins.Top = 6
-      Margins.Right = 6
-      Margins.Bottom = 6
+      Width = 504
+      Height = 87
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
       object btnRefresh: TBitBtn
-        Left = 32
-        Top = 34
-        Width = 322
-        Height = 78
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 16
+        Top = 17
+        Width = 161
+        Height = 39
         Action = actRefresh
         Caption = '&Refresh Package List'
         Glyph.Data = {
@@ -92,28 +81,20 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         TabOrder = 0
       end
       object chkInstalledOnly: TCheckBox
-        Left = 798
-        Top = 60
-        Width = 206
-        Height = 34
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 399
+        Top = 30
+        Width = 103
+        Height = 17
         Caption = 'Installed Only'
         TabOrder = 1
       end
       object edtNameFilter: TLabeledEdit
-        Left = 366
-        Top = 124
-        Width = 627
-        Height = 39
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
-        EditLabel.Width = 324
-        EditLabel.Height = 31
+        Left = 183
+        Top = 62
+        Width = 314
+        Height = 24
+        EditLabel.Width = 160
+        EditLabel.Height = 24
         EditLabel.Margins.Left = 12
         EditLabel.Margins.Top = 12
         EditLabel.Margins.Right = 12
@@ -125,17 +106,13 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         TextHint = 'leave blank to include all packages'
       end
       object rgrpSortBy: TRadioGroup
-        Left = 366
-        Top = 20
-        Width = 420
-        Height = 92
+        Left = 183
+        Top = 10
+        Width = 210
+        Height = 46
         Hint = 
           'This parameter is passed to the command line but does not seem t' +
           'o have any effect.'
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
         Caption = 'Sort By'
         Columns = 3
         ItemIndex = 0
@@ -148,62 +125,46 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       end
     end
     object pnlInstall: TPanel
-      Left = 1009
+      Left = 505
       Top = 1
-      Width = 818
-      Height = 176
-      Margins.Left = 6
-      Margins.Top = 6
-      Margins.Right = 6
-      Margins.Bottom = 6
+      Width = 409
+      Height = 87
       Align = alLeft
       BevelEdges = []
       BevelOuter = bvNone
       TabOrder = 1
       object Label1: TLabel
-        Left = 185
-        Top = 27
-        Width = 233
-        Height = 31
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 93
+        Top = 14
+        Width = 116
+        Height = 16
         Alignment = taRightJustify
         Caption = 'RAD Studio Version:'
       end
       object Label2: TLabel
-        Left = 20
-        Top = 121
-        Width = 398
-        Height = 29
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 5
+        Top = 61
+        Width = 204
+        Height = 14
         Alignment = taRightJustify
         Caption = 'All EULAs are automatically accepted.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clGrayText
-        Font.Height = -24
+        Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
       end
       object btnInstallSelected: TBitBtn
-        Left = 430
-        Top = 77
-        Width = 372
-        Height = 68
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 215
+        Top = 39
+        Width = 186
+        Height = 34
         Action = actInstallChecked
         Caption = 'Install checked'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -26
+        Font.Height = -13
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         Glyph.Data = {
@@ -237,21 +198,17 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         TabOrder = 0
       end
       object chkAcceptEULAs: TCheckBox
-        Left = 208
-        Top = 79
-        Width = 210
-        Height = 34
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 104
+        Top = 40
+        Width = 105
+        Height = 17
         Alignment = taLeftJustify
         Caption = 'Accept EULAs'
         Checked = True
         Enabled = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -26
+        Font.Height = -13
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
@@ -259,14 +216,10 @@ object frmAutoGetItMain: TfrmAutoGetItMain
         TabOrder = 1
       end
       object cmbRADVersions: TComboBox
-        Left = 430
-        Top = 24
-        Width = 372
-        Height = 39
-        Margins.Left = 6
-        Margins.Top = 6
-        Margins.Right = 6
-        Margins.Bottom = 6
+        Left = 215
+        Top = 12
+        Width = 186
+        Height = 24
         Style = csDropDownList
         TabOrder = 2
       end
@@ -274,20 +227,16 @@ object frmAutoGetItMain: TfrmAutoGetItMain
   end
   object lbPackages: TCheckListBox
     Left = 0
-    Top = 178
-    Width = 1842
-    Height = 822
-    Margins.Left = 6
-    Margins.Top = 6
-    Margins.Right = 6
-    Margins.Bottom = 6
+    Top = 89
+    Width = 921
+    Height = 411
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -26
+    Font.Height = -13
     Font.Name = 'Consolas'
     Font.Style = []
-    ItemHeight = 31
+    ItemHeight = 15
     Items.Strings = (
       'one'
       'two'
@@ -296,39 +245,37 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     PopupMenu = mnuCheckListPopup
     TabOrder = 1
     OnClick = lbPackagesClick
+    ExplicitWidth = 919
+    ExplicitHeight = 407
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 1100
-    Width = 1842
-    Height = 38
-    Margins.Left = 6
-    Margins.Top = 6
-    Margins.Right = 6
-    Margins.Bottom = 6
+    Top = 550
+    Width = 921
+    Height = 19
     Panels = <
       item
-        Width = 200
-      end
-      item
-        Width = 200
+        Width = 100
       end
       item
         Width = 100
+      end
+      item
+        Width = 50
       end>
+    ExplicitTop = 546
+    ExplicitWidth = 919
   end
   object mmoDescription: TMemo
     Left = 0
-    Top = 1008
-    Width = 1842
-    Height = 92
-    Margins.Left = 6
-    Margins.Top = 6
-    Margins.Right = 6
-    Margins.Bottom = 6
+    Top = 504
+    Width = 921
+    Height = 46
     Align = alBottom
     ScrollBars = ssVertical
     TabOrder = 3
+    ExplicitTop = 500
+    ExplicitWidth = 919
   end
   object aclAutoGetit: TActionList
     Left = 216

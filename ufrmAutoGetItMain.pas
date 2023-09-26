@@ -130,6 +130,8 @@ begin
     Result := 2   // BDS 21 | Delphi 10.4 Sydney
   else if DVer = '22.0' then
     Result := 2   // BDS 22 | Delphi 11.0 Alexandria
+  else if DVer = '23.0' then
+    Result := 2   // BDS 23 | Delphi 12.0 Yukon
   else
     Result := -1; // unsupported Delphi version
 end;
@@ -432,9 +434,9 @@ end;
 
 procedure TfrmAutoGetItMain.LoadRADVersionsCombo;
 const
-  MAX_VERSIONS = 4;
-  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0', '22.0');
-  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney', '11 Alexandria');
+  MAX_VERSIONS = 5;
+  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0', '22.0', '23.0');
+  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney', '11 Alexandria', '12 Yukon');
 begin
   cmbRADVersions.Items.Clear;
 
