@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.Mask, Data.Bind.EngExt, Vcl.Bind.DBEngExt, Data.Bind.Components;
+  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.Mask, Data.Bind.EngExt, Vcl.Bind.DBEngExt, Data.Bind.Components,
+  Vcl.Imaging.pngimage, Vcl.BaseImageCollection, Vcl.ImageCollection;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -52,6 +53,8 @@ type
     Splitter1: TSplitter;
     pnlListOpts: TPanel;
     pnlInstall: TPanel;
+    imlAG: TImageCollection;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure DosCommandTerminated(Sender: TObject);

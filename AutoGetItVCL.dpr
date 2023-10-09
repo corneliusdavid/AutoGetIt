@@ -1,5 +1,9 @@
 program AutoGetItVCL;
 
+
+
+{$R *.dres}
+
 uses
   Vcl.Forms,
   ufrmAutoGetItMain in 'ufrmAutoGetItMain.pas' {frmAutoGetItMain},
