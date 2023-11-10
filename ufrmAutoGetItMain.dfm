@@ -2403,8 +2403,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       BevelEdges = []
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 504
-      ExplicitTop = -4
       object Label1: TLabel
         Left = 93
         Top = 14
@@ -5443,6 +5441,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Font.Height = -13
     Font.Name = 'Consolas'
     Font.Style = []
+    ItemHeight = 15
     Items.Strings = (
       'one'
       'two'
@@ -5451,7 +5450,6 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     PopupMenu = mnuCheckListPopup
     TabOrder = 1
     OnClick = lbPackagesClick
-    ExplicitTop = 87
   end
   object StatusBar: TStatusBar
     Left = 0
