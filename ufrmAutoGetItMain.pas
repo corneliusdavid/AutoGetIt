@@ -177,8 +177,6 @@ end;
 
 procedure TfrmAutoGetItMain.actInstallCheckedExecute(Sender: TObject);
 begin
-  if True then
-
   actInstallChecked.Enabled := False;
   actRefresh.Enabled := False;
   try
