@@ -93,6 +93,7 @@ type
     function ParseGetItName(const GetItLine: string): string;
     function CountChecked: Integer;
     function SelectedBDSVersion: string;
+    function IsPackageIndexValid: Boolean;
     property PackageCount: Integer write SetPackageCount;
     property DownloadTime: Integer write SetDownloadTime;
     property ExecLine: string write SetExecLine;
@@ -159,19 +160,29 @@ begin
   end
 end;
 
+function TfrmAutoGetItMain.IsPackageIndexValid: Boolean;
+begin
+  Result := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
+end;
+
 procedure TfrmAutoGetItMain.lbPackagesClick(Sender: TObject);
 begin
-  actInstallOne.Enabled := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
-  actUninstallOne.Enabled := (lbPackages.ItemIndex > -1) and (lbPackages.ItemIndex < lbPackages.Items.Count);
+  if IsPackageIndexValid then begin
+    actInstallOne.Enabled := True;
+    actUninstallOne.Enabled := True;
 
-  mmoDescription.Text := lbPackages.Items[lbPackages.ItemIndex];
+    mmoDescription.Text := lbPackages.Items[lbPackages.ItemIndex];
 
-  if actInstallOne.Enabled then begin
-    actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
-    actUninstallOne.Caption := 'Uninstall ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+    if actInstallOne.Enabled then begin
+      actInstallOne.Caption := 'Install ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+      actUninstallOne.Caption := 'Uninstall ' + ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+    end else begin
+      actInstallOne.Caption := 'Install ...';
+      actUninstallOne.Caption := 'Uninstall ...';
+    end;
   end else begin
-    actInstallOne.Caption := 'Install ...';
-    actUninstallOne.Caption := 'Uninstall ...';
+    actInstallOne.Enabled := False;
+    actUninstallOne.Enabled := False;
   end;
 end;
 
@@ -207,34 +218,38 @@ end;
 
 procedure TfrmAutoGetItMain.actInstallOneExecute(Sender: TObject);
 begin
-  actInstallOne.Enabled := False;
-  actRefresh.Enabled := False;
-  try
-    frmInstallLog.Initialize;
-    frmInstallLog.ProcessGetItPackage(BDSBinDir,
-               GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
-               1, 1, FInstallAborted);
+  if IsPackageIndexValid then begin
+    actInstallOne.Enabled := False;
+    actRefresh.Enabled := False;
+    try
+      frmInstallLog.Initialize;
+      frmInstallLog.ProcessGetItPackage(BDSBinDir,
+                 GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+                 1, 1, FInstallAborted);
 
-    frmInstallLog.NotifyFinished;
-  finally
-    actInstallOne.Enabled := True;
-    actRefresh.Enabled := True;
+      frmInstallLog.NotifyFinished;
+    finally
+      actInstallOne.Enabled := True;
+      actRefresh.Enabled := True;
+    end;
   end;
 end;
 
 procedure TfrmAutoGetItMain.actUninstallOneExecute(Sender: TObject);
 begin
-  actUninstallOne.Enabled := False;
-  actRefresh.Enabled := False;
-  try
-    frmInstallLog.Initialize;
-    frmInstallLog.ProcessGetItPackage(BDSBinDir,
-                       GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
-                       1, 1, FInstallAborted);
-    frmInstallLog.NotifyFinished;
-  finally
-    actUninstallOne.Enabled := True;
-    actRefresh.Enabled := True;
+  if IsPackageIndexValid then begin
+    actUninstallOne.Enabled := False;
+    actRefresh.Enabled := False;
+    try
+      frmInstallLog.Initialize;
+      frmInstallLog.ProcessGetItPackage(BDSBinDir,
+                         GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+                         1, 1, FInstallAborted);
+      frmInstallLog.NotifyFinished;
+    finally
+      actUninstallOne.Enabled := True;
+      actRefresh.Enabled := True;
+    end;
   end;
 end;
 
