@@ -7,6 +7,12 @@ This Delphi program uses the DosCommand component (available on GetIt) to shell 
 
 _Originally Written in Delphi 10.4.1, tested on the update to Delphi 10.4.2: installed over 75 packages in less than 30 minutes!_
 
+## Build ##
+
+This code, as stated above, was originally written in Delphi 10.4 Sydney; it was upgraded to Delphi 11 Alexandria and now is maintained in Delphi 12 Athens. It uses an [ImageCollection](http://docwiki.embarcadero.com/RADStudio/Athens/en/Supporting_high-DPI_images_with_the_Image_Collection_and_Virtual_ImageList_components) componet which was introduced in Delphi 10.3 Rio, so is not compatible with versions of Delphi before that. However, the compiled application is available here (click on [Releases](https://github.com/corneliusdavid/AutoGetIt/releases)) which supports the GetIt command-line tool back to Delphi 10.2 Tokyo.
+
+The only add-on package needed to compile this code is the [DOSCommand](https://github.com/TurboPack/DOSCommand) library, available either on GitHub or on GetIt.
+
 ## Batch files
 
 If you don't want to run the GUI, I also wrote a bunch of batch files that do the same thing but with pre-selected groups of packages.  I basically dumped all the packages into a text file then prepended the GetIt command line to install them and separated them into variously grouped batch files, some duplicated among a couple of groups. If you haven't already done this for your install, this will help get you started.
