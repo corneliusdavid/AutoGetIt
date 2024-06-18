@@ -3,8 +3,7 @@ unit ufrmInstallLog;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, DosCommand,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.ComCtrls, Vcl.StdCtrls, DosCommand,
   Vcl.Buttons, Vcl.ExtCtrls;
 
 type
@@ -41,7 +40,7 @@ implementation
 {$R *.dfm}
 
 uses
-  System.IOUtils, System.Diagnostics;
+  System.SysUtils, System.IOUtils, System.Diagnostics;
 
 { TfrmInstallLog }
 

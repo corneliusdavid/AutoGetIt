@@ -3,11 +3,9 @@ unit ufrmAutoGetItMain;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
-  System.ImageList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  DosCommand, Vcl.CheckLst, Vcl.ComCtrls, Vcl.Menus, Vcl.Mask, Data.Bind.EngExt, Vcl.Bind.DBEngExt, Data.Bind.Components,
-  Vcl.Imaging.pngimage, Vcl.BaseImageCollection, Vcl.ImageCollection;
+  System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Data.Bind.Components, Data.Bind.EngExt, Vcl.Bind.DBEngExt, DosCommand, Vcl.CheckLst, Vcl.ComCtrls,
+  Vcl.Menus, Vcl.Mask, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -31,9 +29,9 @@ type
     Savedcheckeditems1: TMenuItem;
     actUncheckAll: TAction;
     UncheckAll1: TMenuItem;
-    N1: TMenuItem;
+    MenuSeparator1: TMenuItem;
     InstallChecked1: TMenuItem;
-    N2: TMenuItem;
+    MenuSeparator2: TMenuItem;
     chkAcceptEULAs: TCheckBox;
     btnInstallSelected: TBitBtn;
     actUninstallChecked: TAction;
@@ -108,7 +106,8 @@ implementation
 {$R *.dfm}
 
 uses
-  System.Diagnostics, System.Win.Registry, System.StrUtils, System.IOUtils,
+  Winapi.Windows, System.SysUtils, System.Diagnostics, System.Win.Registry,
+  System.StrUtils, System.IOUtils,
   ufrmInstallLog;
 
 const
@@ -157,7 +156,7 @@ begin
     2: Result := Format('-u="%s"', [GetItPackageName]);
   else
     raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
-  end
+  end;
 end;
 
 function TfrmAutoGetItMain.IsPackageIndexValid: Boolean;
@@ -287,7 +286,7 @@ begin
 
     Screen.Cursor := crHourGlass;
     try
-      var CmdTime := TStopWatch.Create;
+      var CmdTime := TStopwatch.Create;
       CmdTime.Start;
 
       DosCommand.Execute;
@@ -297,7 +296,7 @@ begin
       CleanPackageList;
 
       CmdTime.Stop;
-      DownloadTime := cmdTime.Elapsed.Seconds;
+      DownloadTime := CmdTime.Elapsed.Seconds;
       PackageCount := lbPackages.Items.Count;
     finally
       Screen.Cursor := crDefault;
@@ -380,14 +379,14 @@ end;
 
 function TfrmAutoGetItMain.BDSRootPath(const BDSVersion: string): string;
 begin
-  var reg := TRegistry.Create;
+  var Reg := TRegistry.Create;
   try
-    reg.RootKey := HKEY_CURRENT_USER;
+    Reg.RootKey := HKEY_CURRENT_USER;
 
-    if reg.OpenKey(BDS_USER_ROOT + BDSVersion, False) then
-      Result := reg.ReadString('RootDir');
+    if Reg.OpenKey(BDS_USER_ROOT + BDSVersion, False) then
+      Result := Reg.ReadString('RootDir');
   finally
-    reg.Free;
+    Reg.Free;
   end;
 end;
 
@@ -406,8 +405,7 @@ begin
     LastPackage := lbPackages.Items[i-1];
 
     if (LastPackage.Length > 0) and StartsText(LastPackage, lbPackages.Items[i]) then
-      lbPackages.Items.Delete(i - 1)
-    else
+      lbPackages.Items.Delete(i - 1);
   end;
 end;
 
@@ -439,7 +437,7 @@ begin
       FPackageNewLine := ANewLine;
     end else
       // add to the previous package line
-      FPackageNewLine := FPackageNewLine + ANewLine
+      FPackageNewLine := FPackageNewLine + ANewLine;
   end;
 end;
 
@@ -452,17 +450,18 @@ procedure TfrmAutoGetItMain.LoadRADVersionsCombo;
 const
   MAX_VERSIONS = 5;
   BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0', '22.0', '23.0');
-  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney', '11 Alexandria', '12 Athens');
+  DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney', '11 Alexandria',
+                                                    '12 Athens');
 begin
   cmbRADVersions.Items.Clear;
 
-  var reg := TRegistry.Create;
+  var Reg := TRegistry.Create;
   try
-    reg.RootKey := HKEY_CURRENT_USER;
+    Reg.RootKey := HKEY_CURRENT_USER;
 
     // find and list all versions of RAD studio installed
     for var i := 1 to MAX_VERSIONS do
-      if reg.OpenKey(BDS_USER_ROOT + BDS_VERSIONS[i], False) then begin
+      if Reg.OpenKey(BDS_USER_ROOT + BDS_VERSIONS[i], False) then begin
         // make sure a root path is listed before adding this version
         if Length(BDSRootPath(BDS_VERSIONS[i])) > 0 then
           cmbRADVersions.Items.Insert(0, BDS_VERSIONS[i] + ' - Delphi ' + DELPHI_NAMES[i]);
@@ -476,37 +475,37 @@ begin
       cmbRADVersions.Enabled := False;
     end;
   finally
-    reg.Free;
+    Reg.Free;
   end;
 end;
 
 function TfrmAutoGetItMain.ParseGetItName(const GetItLine: string): string;
 begin
-  var space := Pos(' ', GetItLine);
-  Result := LeftStr(GetItLine, space - 1);
+  var Space := Pos(' ', GetItLine);
+  Result := LeftStr(GetItLine, Space - 1);
 end;
 
 procedure TfrmAutoGetItMain.ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
 var
   GetItLine: string;
   GetItName: string;
-  count, total: Integer;
+  Count, Total: Integer;
 begin
   FInstallAborted := False;
-  total := CountChecked;
-  if total = 0 then
+  Total := CountChecked;
+  if Total = 0 then
     ShowMessage('There are no packages selected.')
   else begin
-    count := 0;
+    Count := 0;
     frmInstallLog.Initialize;
     for var i := 0 to lbPackages.Count - 1 do begin
       if lbPackages.Checked[i] then begin
         GetItLine := lbPackages.Items[i];
         GetItName := ParseGetItName(GetItLine);
 
-        Inc(count);
+        Inc(Count);
         frmInstallLog.ProcessGetItPackage(BDSBinDir, GetItArgsFunc(GetItName),
-                                          Count, Total, FInstallAborted)
+                                          Count, Total, FInstallAborted);
       end;
 
       if FInstallAborted then
