@@ -5362,7 +5362,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       end
       object btnInstallSelected: TBitBtn
         Left = 215
-        Top = 39
+        Top = 42
         Width = 186
         Height = 34
         Action = actInstallChecked
@@ -5540,15 +5540,15 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     Top = 329
   end
   object mnuCheckListPopup: TPopupMenu
-    Left = 176
-    Top = 488
+    Left = 208
+    Top = 432
     object CheckAll1: TMenuItem
       Action = actCheckAll
     end
     object UncheckAll1: TMenuItem
       Action = actUncheckAll
     end
-    object N1: TMenuItem
+    object MenuSeparator1: TMenuItem
       Caption = '-'
     end
     object InstallChecked1: TMenuItem
@@ -5563,7 +5563,7 @@ object frmAutoGetItMain: TfrmAutoGetItMain
     object Uninstallhighlightedpackage1: TMenuItem
       Action = actUninstallOne
     end
-    object N2: TMenuItem
+    object MenuSeparator2: TMenuItem
       Caption = '-'
     end
     object Savedcheckeditems1: TMenuItem
@@ -5604,8 +5604,8 @@ object frmAutoGetItMain: TfrmAutoGetItMain
       end>
     Options = [fdoOverWritePrompt, fdoCreatePrompt]
     Title = 'Save a set of GetIt checked names'
-    Left = 488
-    Top = 528
+    Left = 384
+    Top = 480
   end
   object dlgClearChecksFirst: TTaskDialog
     Buttons = <>
