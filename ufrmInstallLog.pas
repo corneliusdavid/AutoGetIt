@@ -72,7 +72,8 @@ end;
 procedure TfrmInstallLog.DosCmdGetItInstallNewLine(ASender: TObject;
   const ANewLine: string; AOutputType: TOutputType);
 begin
-  AddLog(ANewLine);
+  if AOutputType = otEntireLine then
+    AddLog(ANewLine);
 end;
 
 procedure TfrmInstallLog.DosCmdGetItInstallTerminated(Sender: TObject);
