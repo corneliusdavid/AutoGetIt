@@ -70,3 +70,6 @@ modules/
 *.res
 *.txt
 *.xlsx
+*.bak
+*.dsv
+*.vlb
