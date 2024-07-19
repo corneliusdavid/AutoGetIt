@@ -1,0 +1,52 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{E6378F97-4251-4F35-BEC4-B01961A1E949}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="AutoGetItVCL.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="AutoGetItVCL">
+        <MSBuild Projects="AutoGetItVCL.dproj"/>
+    </Target>
+    <Target Name="AutoGetItVCL:Clean">
+        <MSBuild Projects="AutoGetItVCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AutoGetItVCL:Make">
+        <MSBuild Projects="AutoGetItVCL.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="AutoGetItVCL"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="AutoGetItVCL:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="AutoGetItVCL:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='Release'">
+        <BuildGroupProject Include="AutoGetItVCL.dproj">
+            <ProjectGuid>{022F0643-10FD-4011-8377-70FD8506237A}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+    <ItemGroup Condition="'$(BuildGroup)'=='debug-32'">
+        <BuildGroupProject Include="AutoGetItVCL.dproj">
+            <ProjectGuid>{022F0643-10FD-4011-8377-70FD8506237A}</ProjectGuid>
+            <Configurations>Debug</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+</Project>
