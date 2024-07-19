@@ -4,11 +4,12 @@
         <ProjectVersion>20.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
         <MainSource>AutoGetItVCL.dpr</MainSource>
+        <ProjectName Condition="'$(ProjectName)'==''">AutoGetItVCL</ProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -71,7 +72,6 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <SanitizedProjectName>AutoGetItVCL</SanitizedProjectName>
         <Custom_Styles>&quot;Amethyst Kamri|VCLSTYLE|$(BDSCOMMONDIR)\Styles\AmethystKamri.vsf&quot;</Custom_Styles>
-        <GetItPackages>DOSCommand-12</GetItPackages>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
@@ -129,16 +129,18 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.0.0;InternalName=AutoGetIt;LegalCopyright=;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1;Comments=</VerInfo_Keys>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.2.1.0;InternalName=AutoGetIt;LegalCopyright=;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.2;Comments=</VerInfo_Keys>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
         <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
+        <VerInfo_Release>1</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1;Comments=</VerInfo_Keys>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.2.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.2;Comments=</VerInfo_Keys>
         <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
+        <VerInfo_Release>1</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -926,6 +928,9 @@
                     <Platform Name="Win64">
                         <Operation>1</Operation>
                     </Platform>
+                    <Platform Name="Win64x">
+                        <Operation>1</Operation>
+                    </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectiOSDeviceDebug">
                     <Platform Name="iOSDevice32">
@@ -1219,6 +1224,7 @@
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win64x" Name="$(PROJECTNAME)"/>
             </Deployment>
             <Platforms>
                 <Platform value="Win32">True</Platform>
