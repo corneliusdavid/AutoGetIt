@@ -1,4 +1,9 @@
 # AutoGetIt
+
+[![Delphi](https://img.shields.io/badge/Delphi-RAD%20Studio-red.svg)](https://www.embarcadero.com/products/rad-studio)
+[![Platform](https://img.shields.io/badge/Platform-Windows-blue.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 The idea with this small Delphi program is to automate the [GetIt package manager](http://docwiki.embarcadero.com/RADStudio/en/Installing_a_Package_Using_GetIt_Package_Manager) for RAD Studio (Delphi) by calling the GetIt command-line tool that comes with Delphi.  Every time there's an update or a need to reinstall, it's a pain to tediously and manually go through all the GetIt packages and reinstall them. Wouldn't it be nice if there was a saved checklist?
 
 Now there is!
