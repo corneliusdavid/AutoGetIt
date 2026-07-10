@@ -14,7 +14,7 @@ _Originally Written in Delphi 10.4.1, tested on the update to Delphi 10.4.2: ins
 
 ## Delphi 13 ##
 
-_NOTE: The GetItCmd.exe that ships with Delphi 13 raises an error when redirecting its output and does not return all the results. Therefore, AutoGetIt does not work (yet) with Delphi 13. As soon as there is a fix, this repository will be updated._
+_NOTE: The GetItCmd.exe that ships with Delphi 13 Florence raises an error when redirecting its output and does not return all the results. AutoGetIt does support Delphi 13 but it will only list a few packages at a time. As soon as GetItCmd is fixed, the application will work and this comment will be removed._
 
 ## Build ##
 
