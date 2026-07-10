@@ -5,8 +5,7 @@ interface
 uses
   System.Classes, System.UITypes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, Data.Bind.Components, Data.Bind.EngExt, Vcl.Bind.DBEngExt, DosCommand, Vcl.CheckLst, Vcl.ComCtrls,
-  Vcl.Menus, Vcl.Mask, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage, Beyond.Bind.DateUtils,
-  Beyond.Bind.Json, Beyond.Bind.StrUtils;
+  Vcl.Menus, Vcl.Mask, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage;
 
 type
   TfrmAutoGetItMain = class(TForm)
