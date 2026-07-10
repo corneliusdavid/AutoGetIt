@@ -3,9 +3,10 @@ unit ufrmAutoGetItMain;
 interface
 
 uses
-  System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.Buttons,
+  System.Classes, System.UITypes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, Data.Bind.Components, Data.Bind.EngExt, Vcl.Bind.DBEngExt, DosCommand, Vcl.CheckLst, Vcl.ComCtrls,
-  Vcl.Menus, Vcl.Mask, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage;
+  Vcl.Menus, Vcl.Mask, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage, Beyond.Bind.DateUtils,
+  Beyond.Bind.Json, Beyond.Bind.StrUtils;
 
 type
   TfrmAutoGetItMain = class(TForm)
@@ -75,6 +76,8 @@ type
     var
       FPastFirstItem: Boolean;
       FFinished: Boolean;
+      FCommandSucceeded: Boolean;
+      FLastErrorLine: string;
       FPackageNewLine: string;
       FInstallAborted: Boolean;
     procedure SetExecLine(const Value: string);
@@ -135,6 +138,8 @@ begin
     Result := 2   // BDS 22 | Delphi 11.0 Alexandria
   else if DVer = '23.0' then
     Result := 2   // BDS 23 | Delphi 12.0 Athens
+  else if DVer = '37.0' then
+    Result := 2   // BDS 37 | Delphi 13.0 Florence
   else
     Result := -1; // unsupported Delphi version
 end;
@@ -262,6 +267,8 @@ begin
     lbPackages.Items.Clear;
     FPastFirstItem := False;
     FFinished := False;
+    FCommandSucceeded := False;
+    FLastErrorLine := EmptyStr;
 
     case rgrpSortBy.ItemIndex of
       0: SortField := 'name';
@@ -304,6 +311,13 @@ begin
 
     actInstallChecked.Enabled := lbPackages.Items.Count > 0;
     actUninstallChecked.Enabled := lbPackages.Items.Count > 0;
+
+    if not FCommandSucceeded then
+      MessageDlg('GetItCmd.exe did not report successful completion, so the package list above may be ' +
+                  'incomplete.' + sLineBreak + sLineBreak +
+                  IfThen(FLastErrorLine <> EmptyStr, FLastErrorLine,
+                         'The process ended without producing a "command finished" message.'),
+                  mtWarning, [mbOK], 0);
   finally
     actRefresh.Enabled := True;
   end;
@@ -419,11 +433,19 @@ end;
 
 procedure TfrmAutoGetItMain.DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
 begin
+  if StartsText('ERROR:', ANewLine) then begin
+    // GetItCmd can crash partway through listing (e.g. an access violation) instead of
+    // reporting failure normally, so capture the error text for display once it terminates.
+    FLastErrorLine := ANewLine;
+    Exit;
+  end;
+
   if not FPastFirstItem then begin
     if StartsText('--', ANewLine) then
       FPastFirstItem := True;
   end else if ContainsText(ANewLine, 'command finished') then begin
     FFinished := True;
+    FCommandSucceeded := True;
     // write out the last package
     if lbPackages.Items.IndexOf(FPackageNewLine) = -1 then
       lbPackages.Items.Add(FPackageNewLine);
@@ -448,10 +470,10 @@ end;
 
 procedure TfrmAutoGetItMain.LoadRADVersionsCombo;
 const
-  MAX_VERSIONS = 5;
-  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0', '22.0', '23.0');
+  MAX_VERSIONS = 6;
+  BDS_VERSIONS: array[1..MAX_VERSIONS] of string = ('19.0', '20.0', '21.0', '22.0', '23.0', '37.0');
   DELPHI_NAMES: array[1..MAX_VERSIONS] of string = ('10.2 Tokyo', '10.3 Rio', '10.4 Sydney', '11 Alexandria',
-                                                    '12 Athens');
+                                                    '12 Athens', '13 Florence');
 begin
   cmbRADVersions.Items.Clear;
 
