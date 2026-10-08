@@ -229,11 +229,11 @@ begin
     actRefresh.Enabled := False;
     try
       frmInstallLog.Initialize;
-      frmInstallLog.ProcessGetItPackage(GetItCmdExe,
-                 GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+      var GetItName := ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+      frmInstallLog.ProcessGetItPackage(GetItCmdExe, GetItInstallCmd(GetItName), GetItName,
                  1, 1, FInstallAborted);
 
-      frmInstallLog.NotifyFinished;
+      frmInstallLog.NotifyFinished(1);
     finally
       actInstallOne.Enabled := True;
       actRefresh.Enabled := True;
@@ -248,10 +248,10 @@ begin
     actRefresh.Enabled := False;
     try
       frmInstallLog.Initialize;
-      frmInstallLog.ProcessGetItPackage(GetItCmdExe,
-                         GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
+      var GetItName := ParseGetItName(lbPackages.Items[lbPackages.ItemIndex]);
+      frmInstallLog.ProcessGetItPackage(GetItCmdExe, GetItUninstallCmd(GetItName), GetItName,
                          1, 1, FInstallAborted);
-      frmInstallLog.NotifyFinished;
+      frmInstallLog.NotifyFinished(1);
     finally
       actUninstallOne.Enabled := True;
       actRefresh.Enabled := True;
@@ -575,14 +575,14 @@ begin
         GetItName := ParseGetItName(GetItLine);
 
         Inc(Count);
-        frmInstallLog.ProcessGetItPackage(GetItCmdExe, GetItArgsFunc(GetItName),
+        frmInstallLog.ProcessGetItPackage(GetItCmdExe, GetItArgsFunc(GetItName), GetItName,
                                           Count, Total, FInstallAborted);
       end;
 
       if FInstallAborted then
         Break;
     end;
-    frmInstallLog.NotifyFinished;
+    frmInstallLog.NotifyFinished(Total);
   end;
 end;
 
