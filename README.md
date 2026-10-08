@@ -18,7 +18,7 @@ AutoGetIt supports Delphi 13 Florence (GetIt 7.0). Earlier versions of AutoGetIt
 
 ## Build ##
 
-This code, as stated above, was originally written in Delphi 10.4 Sydney; it was upgraded to Delphi 11 Alexandria and now is maintained in Delphi 12 Athens. It uses an [ImageCollection](http://docwiki.embarcadero.com/RADStudio/Athens/en/Supporting_high-DPI_images_with_the_Image_Collection_and_Virtual_ImageList_components) componet which was introduced in Delphi 10.3 Rio, so is not compatible with versions of Delphi before that. However, the compiled application is available here (click on [Releases](https://github.com/corneliusdavid/AutoGetIt/releases)) which supports the GetIt command-line tool back to Delphi 10.2 Tokyo.
+This code, as stated above, was originally written in Delphi 10.4 Sydney; it was upgraded to Delphi 11 Alexandria, then Delphi 12 Athens, and now compiles in Delph 13 Florence (but retains backwards compatibility for the earlier versions). It uses an [ImageCollection](http://docwiki.embarcadero.com/RADStudio/Athens/en/Supporting_high-DPI_images_with_the_Image_Collection_and_Virtual_ImageList_components) componet which was introduced in Delphi 10.3 Rio, so is not compatible with versions of Delphi before that. However, the compiled application is available here (click on [Releases](https://github.com/corneliusdavid/AutoGetIt/releases)) which supports the GetIt command-line tool back to Delphi 10.2 Tokyo.
 
 The only add-on package needed to compile this code is the [DOSCommand](https://github.com/TurboPack/DOSCommand) library, available either on GitHub or on GetIt.
 
