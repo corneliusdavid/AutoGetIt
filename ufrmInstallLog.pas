@@ -23,13 +23,17 @@ type
   private
     FAbort: Boolean;
     FFinished: Boolean;
+    FSucceeded: Integer;
+    FFailures: TStringList;
     procedure AddLog(const LogMsg: string);
   public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure Initialize;
-    procedure NotifyFinished;
-    procedure ProcessGetItPackage(const GetItCmdExe, GetItCmdArgs: string;
-                                  const Count, Total: Integer;
-                                  var Aborted: Boolean);
+    procedure NotifyFinished(const Total: Integer);
+    function ProcessGetItPackage(const GetItCmdExe, GetItCmdArgs, PackageName: string;
+                                 const Count, Total: Integer;
+                                 var Aborted: Boolean): Boolean;
   end;
 
 var
@@ -42,7 +46,23 @@ implementation
 uses
   System.SysUtils, System.IOUtils, System.Diagnostics;
 
+const
+  END_STATUS_TEXT: array[TEndStatus] of string = (
+    'stopped', 'finished', 'still running', 'not started', 'failed to run', 'timed out');
+
 { TfrmInstallLog }
+
+constructor TfrmInstallLog.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FFailures := TStringList.Create;
+end;
+
+destructor TfrmInstallLog.Destroy;
+begin
+  FFailures.Free;
+  inherited Destroy;
+end;
 
 procedure TfrmInstallLog.AddLog(const LogMsg: string);
 begin
@@ -65,6 +85,8 @@ end;
 procedure TfrmInstallLog.Initialize;
 begin
   lbInstallLog.Items.Clear;
+  FFailures.Clear;
+  FSucceeded := 0;
   btnCancel.BringToFront;
   Show;
 end;
@@ -81,9 +103,9 @@ begin
   FFinished := True;
 end;
 
-procedure TfrmInstallLog.ProcessGetItPackage(const GetItCmdExe, GetItCmdArgs: string;
-                                             const Count, Total: Integer;
-                                             var Aborted: Boolean);
+function TfrmInstallLog.ProcessGetItPackage(const GetItCmdExe, GetItCmdArgs, PackageName: string;
+                                            const Count, Total: Integer;
+                                            var Aborted: Boolean): Boolean;
 begin
   lblCount.Caption := Format('%d of %d packages', [Count, Total]);
   lblCount.Update;
@@ -110,19 +132,39 @@ begin
       Application.ProcessMessages;
     until FFinished or FAbort;
 
-    AddLog('========================');
+    // Cancel gets here before OnTerminated; wait for it so ExitCode and EndStatus are final
+    while not FFinished and DosCmdGetItInstall.IsRunning do
+      Application.ProcessMessages;
   finally
     Screen.Cursor := crDefault;
   end;
+
+  // GetItCmd returns a non-zero exit code when it fails
+  var Status := DosCmdGetItInstall.EndStatus;
+  var Code := DosCmdGetItInstall.ExitCode;
+  Result := (Status = esProcess) and (Code = 0);
+
+  AddLog(Format('Result: %s, exit code %d', [END_STATUS_TEXT[Status], Code]));
+  AddLog('========================');
+
+  if Result then
+    Inc(FSucceeded)
+  else
+    FFailures.Add(Format('%s: %s, exit code %d', [PackageName, END_STATUS_TEXT[Status], Code]));
 
   Aborted := FAbort;
   if FAbort then
     AddLog('Aborted!');
 end;
 
-procedure TfrmInstallLog.NotifyFinished;
+procedure TfrmInstallLog.NotifyFinished(const Total: Integer);
 begin
-  AddLog('Finished');
+  AddLog(Format('Finished: %d of %d packages succeeded.', [FSucceeded, Total]));
+  if FFailures.Count > 0 then begin
+    AddLog('Did not succeed:');
+    for var Failure in FFailures do
+      AddLog('  ' + Failure);
+  end;
   btnClose.BringToFront;
 end;
 
