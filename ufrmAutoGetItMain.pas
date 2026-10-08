@@ -266,6 +266,7 @@ begin
     lbPackages.Items.Clear;
     FPastFirstItem := False;
     FFinished := False;
+    FPackageNewLine := EmptyStr;
     FCommandSucceeded := False;
     FLastErrorLine := EmptyStr;
 
@@ -430,8 +431,23 @@ begin
       Result := Result + 1;
 end;
 
+function IsPackageRecordStart(const GetItLine: string): Boolean;
+{ GetItCmd pads the package Id to a fixed column, so a new package record is a line whose FIRST word
+  is followed by two or more spaces. Looking for a double space anywhere in the line would also
+  treat a description line with two spaces after a full stop as a new package. }
+begin
+  var Space := Pos(' ', GetItLine);
+  Result := (Space > 1) and (Copy(GetItLine, Space, 2) = '  ');
+end;
+
 procedure TfrmAutoGetItMain.DosCommandNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
 begin
+  // TDosCommand also raises this event with otBeginningOfLine after each pipe read, passing the
+  // unfinished line received so far. GetItCmd writes in small pieces, so reads often end mid-line;
+  // parsing those fragments as lines produced the cut-off and missing packages. Only whole lines count.
+  if AOutputType <> otEntireLine then
+    Exit;
+
   if StartsText('ERROR:', ANewLine) then begin
     // GetItCmd can crash partway through listing (e.g. an access violation) instead of
     // reporting failure normally, so capture the error text for display once it terminates.
@@ -449,7 +465,7 @@ begin
     if lbPackages.Items.IndexOf(FPackageNewLine) = -1 then
       lbPackages.Items.Add(FPackageNewLine);
   end else if not FFinished and (Trim(ANewLine).Length > 0) then begin
-    if ANewLine.Contains('  ') then begin
+    if IsPackageRecordStart(ANewLine) then begin
       // if this is a new line, write out whatever was in the buffer for the previous package
       if (not FPackageNewLine.IsEmpty) and (lbPackages.Items.IndexOf(FPackageNewLine) = -1) then
         lbPackages.Items.Add(FPackageNewLine);
@@ -457,8 +473,8 @@ begin
       // start a new package line
       FPackageNewLine := ANewLine;
     end else
-      // add to the previous package line
-      FPackageNewLine := FPackageNewLine + ANewLine;
+      // a line break inside the description: add it to the previous package line, with a space
+      FPackageNewLine := FPackageNewLine + ' ' + Trim(ANewLine);
   end;
 end;
 

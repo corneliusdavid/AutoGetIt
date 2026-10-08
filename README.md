@@ -14,7 +14,7 @@ _Originally Written in Delphi 10.4.1, tested on the update to Delphi 10.4.2: ins
 
 ## Delphi 13 ##
 
-_NOTE: The GetItCmd.exe that ships with Delphi 13 Florence raises an error when redirecting its output and does not return all the results. AutoGetIt does support Delphi 13 but it will only list a few packages at a time. As soon as GetItCmd is fixed, the application will work and this comment will be removed._
+AutoGetIt supports Delphi 13 Florence (GetIt 7.0). Earlier versions of AutoGetIt could show a short or garbled package list there: the cause was partial output lines being parsed as whole ones, not GetItCmd's redirected output, and it is fixed.
 
 ## Build ##
 
