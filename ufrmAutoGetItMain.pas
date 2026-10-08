@@ -79,6 +79,7 @@ type
       FLastErrorLine: string;
       FPackageNewLine: string;
       FInstallAborted: Boolean;
+      FEnvironmentBinDir: string;
     procedure SetExecLine(const Value: string);
     procedure SetDownloadTime(const Value: Integer);
     procedure SetPackageCount(const Value: Integer);
@@ -87,6 +88,8 @@ type
     procedure ProcessCheckedPackages(GetItArgsFunc: TGetItArgsFunction);
     function BDSRootPath(const BDSVersion: string): string;
     function BDSBinDir: string;
+    function GetItCmdExe: string;
+    procedure ApplyRsvarsEnvironment(const BinDir: string);
     function SwitchFlavor(const DelphiVersionStr: string): Integer;
     function GetItInstallCmd(const GetItPackageName: string): string;
     function GetItUninstallCmd(const GetItPackageName: string): string;
@@ -226,7 +229,7 @@ begin
     actRefresh.Enabled := False;
     try
       frmInstallLog.Initialize;
-      frmInstallLog.ProcessGetItPackage(BDSBinDir,
+      frmInstallLog.ProcessGetItPackage(GetItCmdExe,
                  GetItInstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
                  1, 1, FInstallAborted);
 
@@ -245,7 +248,7 @@ begin
     actRefresh.Enabled := False;
     try
       frmInstallLog.Initialize;
-      frmInstallLog.ProcessGetItPackage(BDSBinDir,
+      frmInstallLog.ProcessGetItPackage(GetItCmdExe,
                          GetItUninstallCmd(ParseGetItName(lbPackages.Items[lbPackages.ItemIndex])),
                          1, 1, FInstallAborted);
       frmInstallLog.NotifyFinished;
@@ -287,8 +290,10 @@ begin
       raise ENotImplemented.Create(GETIT_VR_NOT_SUPPORTED_MSG);
     end;
 
-    DosCommand.CommandLine := 'GetItCmd.exe ' + CmdLineArgs;
-    ExecLine := TPath.Combine(DosCommand.CurrentDir, DosCommand.CommandLine);
+    // by its full path: CreateProcess does not look in CurrentDir, so the bare name was found on the
+    // PATH, which can be a different RAD Studio version than the one selected
+    DosCommand.CommandLine := '"' + GetItCmdExe + '" ' + CmdLineArgs;
+    ExecLine := DosCommand.CommandLine;
 
     Screen.Cursor := crHourGlass;
     try
@@ -388,6 +393,51 @@ end;
 function TfrmAutoGetItMain.BDSBinDir: string;
 begin
   Result := TPath.Combine(BDSRootPath(SelectedBDSVersion), 'bin');
+end;
+
+function TfrmAutoGetItMain.GetItCmdExe: string;
+begin
+  var BinDir := BDSBinDir;
+  ApplyRsvarsEnvironment(BinDir);
+  Result := TPath.Combine(BinDir, 'GetItCmd.exe');
+end;
+
+procedure TfrmAutoGetItMain.ApplyRsvarsEnvironment(const BinDir: string);
+{ Sets the variables the selected installation's rsvars.bat sets (BDS, BDSCOMMONDIR, PATH, ...) on
+  this process, so GetItCmd.exe inherits them without going through cmd.exe. Going through cmd.exe
+  ("rsvars.bat && GetItCmd.exe") meant Cancel stopped only cmd.exe and left GetItCmd running. }
+var
+  Line, Name, Value: string;
+  Expanded: array[0..32767] of Char;
+begin
+  // once per installation: rsvars.bat prepends to PATH, so applying it twice would grow it
+  if SameText(BinDir, FEnvironmentBinDir) then
+    Exit;
+
+  var Rsvars := TPath.Combine(BinDir, 'rsvars.bat');
+  if TFile.Exists(Rsvars) then
+    for Line in TFile.ReadAllLines(Rsvars) do begin
+      // rsvars.bat consists of "@SET NAME=VALUE" lines
+      var S := Trim(Line);
+      if StartsText('@', S) then
+        S := Copy(S, 2, MaxInt);
+      if not StartsText('SET ', S) then
+        Continue;
+
+      S := Trim(Copy(S, 5, MaxInt));
+      var Eq := Pos('=', S);
+      if Eq < 2 then
+        Continue;
+
+      Name := Trim(Copy(S, 1, Eq - 1));
+      Value := Copy(S, Eq + 1, MaxInt);
+      // in file order, so %FrameworkDir% in the PATH line sees the value set just before it
+      if ExpandEnvironmentStrings(PChar(Value), Expanded, Length(Expanded)) > 0 then
+        Value := Expanded;
+      SetEnvironmentVariable(PChar(Name), PChar(Value));
+    end;
+
+  FEnvironmentBinDir := BinDir;
 end;
 
 function TfrmAutoGetItMain.BDSRootPath(const BDSVersion: string): string;
@@ -525,7 +575,7 @@ begin
         GetItName := ParseGetItName(GetItLine);
 
         Inc(Count);
-        frmInstallLog.ProcessGetItPackage(BDSBinDir, GetItArgsFunc(GetItName),
+        frmInstallLog.ProcessGetItPackage(GetItCmdExe, GetItArgsFunc(GetItName),
                                           Count, Total, FInstallAborted);
       end;
 

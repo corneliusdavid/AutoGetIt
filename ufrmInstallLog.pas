@@ -27,7 +27,7 @@ type
   public
     procedure Initialize;
     procedure NotifyFinished;
-    procedure ProcessGetItPackage(const StartDir, GetItCmdArgs: string;
+    procedure ProcessGetItPackage(const GetItCmdExe, GetItCmdArgs: string;
                                   const Count, Total: Integer;
                                   var Aborted: Boolean);
   end;
@@ -81,7 +81,7 @@ begin
   FFinished := True;
 end;
 
-procedure TfrmInstallLog.ProcessGetItPackage(const StartDir, GetItCmdArgs: string;
+procedure TfrmInstallLog.ProcessGetItPackage(const GetItCmdExe, GetItCmdArgs: string;
                                              const Count, Total: Integer;
                                              var Aborted: Boolean);
 begin
@@ -92,10 +92,11 @@ begin
   pbInstalls.Position := Count;
   pbInstalls.Update;
 
-  DosCmdGetItInstall.CurrentDir := StartDir;
+  DosCmdGetItInstall.CurrentDir := ExtractFileDir(GetItCmdExe);
 
-  // set up selected Delphi's environment paths--thanks GitHub user toxinon12345!
-  DosCmdGetItInstall.CommandLine := 'rsvars.bat && GetItCmd.exe ' + GetItCmdArgs;
+  // GetItCmd.exe by its full path, with no cmd.exe in between; the selected Delphi's environment
+  // paths (rsvars.bat--thanks GitHub user toxinon12345!) are already set on this process
+  DosCmdGetItInstall.CommandLine := '"' + GetItCmdExe + '" ' + GetItCmdArgs;
 
   AddLog('Command Line: ' + DosCmdGetItInstall.CommandLine);
 
