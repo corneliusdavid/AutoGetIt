@@ -28,6 +28,8 @@ If you don't want to run the GUI, I also wrote a bunch of batch files that do th
 
 To run the batch files, start a DOS Prompt as Administrator, run the `rsvars.bat` batch file from your Delphi folder, then run any of the batch files in the `batch`  folder. You will want to modify the batch files and comment out the packages you don't want.
 
+_NOTE: The package names in these batch files come from the GetIt catalogues of Delphi 10.4 to 12. GetIt 7.0 (Delphi 13 Florence) renamed its packages, to bare names or a `-13` suffix such as `SynEdit-13`, and the Winsoft 2020 packages are no longer in it, so on Delphi 13 these batch files will not find the packages. To make a batch file for Delphi 13, list the packages with `GetItCmd --list= --filter=all` (or use AutoGetIt and save a checked list) and use the names it shows._
+
 ## Links
 
 - [Enabling GetIt Install Logs](https://blog.marcocantu.com/blog/2018-july-getit-install-logs.html)
