@@ -2347,9 +2347,10 @@ object frmInstallLog: TfrmInstallLog
   object DosCmdGetItInstall: TDosCommand
     InputToOutput = False
     MaxTimeAfterBeginning = 0
-    MaxTimeAfterLastOutput = 0
+    MaxTimeAfterLastOutput = 600
     OnNewLine = DosCmdGetItInstallNewLine
     OnTerminated = DosCmdGetItInstallTerminated
+    OnTerminateProcess = DosCmdGetItInstallTerminateProcess
     Left = 240
     Top = 216
   end
