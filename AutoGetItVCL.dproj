@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
         <MainSource>AutoGetItVCL.dpr</MainSource>
@@ -112,13 +112,16 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=AutoGetIt;LegalCopyright=;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.4.0.0;InternalName=AutoGetIt;LegalCopyright=;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.4.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -129,15 +132,15 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.3.0.0;InternalName=AutoGetIt;LegalCopyright=Copyright 2026 by Cornelius Concepts, LLC;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.3;Comments=</VerInfo_Keys>
-        <VerInfo_MinorVer>3</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.4.0.0;InternalName=AutoGetIt;LegalCopyright=Copyright 2026 by Cornelius Concepts, LLC;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.4;Comments=</VerInfo_Keys>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
         <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_MinorVer>3</VerInfo_MinorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.3.0.0;InternalName=AutoGetIt;LegalCopyright=Copyright 2026 by Cornelius Concepts, LLC;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.3;Comments=</VerInfo_Keys>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.4.0.0;InternalName=AutoGetIt;LegalCopyright=Copyright 2026 by Cornelius Concepts, LLC;LegalTrademarks=;OriginalFilename=AutoGetItVCL.exe;ProgramID=com.corneliusconcepts.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.4;Comments=</VerInfo_Keys>
         <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
     </PropertyGroup>
     <ItemGroup>
@@ -178,16 +181,22 @@
                     <Source Name="MainSource">AutoGetItVCL.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\HelpCtxD12.bpl">HelpScribble HelpContext property editor for Delphi 12 Athens</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\Deleaker\DeleakerRADStudioPackage290.bpl">Deleaker</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\ccLib_D290.bpl">Cornelius Concepts Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\BigNumbers290.bpl">Rudy Velthuis&apos; Delphi Big Numbers library</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\GR32_D290.bpl">Graphics32 Design Time Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dfmxinfopower290.bpl">Woll2Woll FirePower X3 Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl290.bpl">IP Abstraction Indy Implementation Design Time</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\Embarcadero\Kai\1.0.1.0\Packages\Kai290.bpl">Kai - AI-Enhanced Delphi coding</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\QBS Software\QuickReport8.0\build\bpl\Win32\Release\lz370.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\QBS Software\QuickReport8.0\build\bpl\Win32\Release\QRWDesign370.bpl">QuickReport 8 Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\QBS Software\QuickReport8.0\build\bpl\Win32\Release\QRDBASE370_W64.bpl">QRDesign base package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\37.0\Bpl\GR32_D370.bpl">Graphics32 Design Time Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclbcbsmp370.bpl">C++Builder Sample Components Package</Excluded_Packages>
+                    <Excluded_Packages Name="E:\Delphi\lib\Gnostice\Document Studio Delphi\Lib\RAD13\Win32\fmxdclgtxDocumentStudioControlsD13.bpl">Gnostice Document Studio Delphi FMX Controls</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\QBS Software\QuickReport8.0\build\bpl\Win32\Release\dclqrd370.bpl">QRDesign design-time</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\QBS Software\QuickReport8.0\build\bpl\Win32\Release\qrdADO370.bpl">QRDesign ADO DatasetInterfaces</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\37.0\Bpl\Win32\dclIndyCore370.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\37.0\Bpl\Win32\dclIndyCore370.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\37.0\Bpl\Win32\dclIndyProtocols370.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\37.0\Bpl\Win32\dclIndyProtocols370.bpl not found</Excluded_Packages>
+                    <Excluded_Packages Name="E:\Delphi\lib\Gnostice\Document Studio Delphi\Lib\RAD13\Win32\vcldclgtxDocumentStudioControlsD13.bpl">Gnostice Document Studio VCL Controls</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k370.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp370.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k370.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp370.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\Embarcadero\Kai\1.0.1.0\Packages\Kai370.bpl">Kai - AI-Enhanced Delphi coding</Excluded_Packages>
                 </Excluded_Packages>
                 <WelcomePageFile Path="README.md"/>
                 <WelcomePageFolder/>
